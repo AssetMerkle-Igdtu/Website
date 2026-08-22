@@ -9,7 +9,7 @@ import AuthPage from "./components/AuthPage";
 import Events from "./pages/Events";
 import Teams from "./pages/Teams";
 import Docs from "./pages/Docs";
-import AMHacksPage from "./pages/AMHacksPage";
+import AMHacksPage from "./pages/vibeathon";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
           {/* <Route path="amhacks" element={<AMHacks />} /> */}
 
           {/*Fixed route */}
-          <Route path="amhacks" element={<AMHacksPage />} />
+          <Route path="vibeathon" element={<AMHacksPage />} />
         </Route>
       </Routes>
     </Router>

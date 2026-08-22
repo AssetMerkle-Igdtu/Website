@@ -12,7 +12,7 @@ const navItems = [
   { path: "/team", label: "Team" },
   { path: "/faq", label: "FAQ" },
   { path: "/docs", label: "Docs" },
-  { path: "/amhacks", label: "AM Hacks 2.0" },
+  { path: "/vibeathon", label: "vibeathon" },
   { path: "/", label: "Profile" },
 ];
 
@@ -58,7 +58,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-4">
             {navItems.map((item) => {
-              if (item.label === "AM Hacks 2.0") {
+              if (item.label === "vibeathon") {
                 return (
                   <Link
                     key={item.label}
