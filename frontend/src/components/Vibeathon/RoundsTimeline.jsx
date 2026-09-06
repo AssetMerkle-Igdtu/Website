@@ -1,11 +1,59 @@
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
-const handleCardMouseMove = (e) => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
-  e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+const RoundCard = ({ round }) => {
+  const cardRef = useRef(null);
+  const [style, setStyle] = useState({});
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    const rotateX = ((y / height) - 0.5) * -20;
+    const rotateY = ((x / width) - 0.5) * 20;
+
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+
+    setStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setStyle({
+      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+    });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        ...style,
+        background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
+      }}
+      className="group relative p-7 rounded-3xl border border-[#E38DA3]/40 shadow-xl shadow-[#F3AFC0]/30 transition-all duration-300 ease-out hover:border-[#CF547A]/60 hover:shadow-[#CF547A]/40 [transform-style:preserve-3d] spotlight-card"
+    >
+      <h3 className="text-xl font-extrabold text-[#402327] tracking-wide group-hover:text-[#CE4777] transition-colors [transform:translateZ(30px)]">
+        {round.title}
+      </h3>
+
+      {round.subtitle && (
+        <p className="text-xs uppercase tracking-widest text-[#CF547A] mt-1 font-semibold [transform:translateZ(20px)]">
+          {round.subtitle}
+        </p>
+      )}
+
+      <p className="text-[#402327]/80 mt-4 leading-relaxed text-sm sm:text-base whitespace-pre-line font-normal [transform:translateZ(15px)]">
+        {round.description}
+      </p>
+    </div>
+  );
 };
 
 /* Single round item */
@@ -37,29 +85,7 @@ const RoundItem = ({ round, index }) => {
           transition={{ duration: 0.55 }}
           viewport={{ once: true }}
         >
-          <div className="relative group">
-            <div
-              onMouseMove={handleCardMouseMove}
-              className="relative p-7 rounded-xl bg-[#FBF4F7] backdrop-blur-md border border-[#E38DA3]/30 shadow-md shadow-[#F3AFC0]/20 transition-all duration-300 group-hover:border-[#CF547A]/60 group-hover:-translate-y-2 group-hover:shadow-[#CF547A]/30 spotlight-card"
-              style={{
-                background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
-              }}
-            >
-              <h3 className="text-xl font-extrabold text-[#402327] tracking-wide">
-                {round.title}
-              </h3>
-
-              {round.subtitle && (
-                <p className="text-xs uppercase tracking-widest text-[#CF547A] mt-1 font-semibold">
-                  {round.subtitle}
-                </p>
-              )}
-
-              <p className="text-[#402327]/80 mt-4 leading-relaxed text-sm sm:text-base whitespace-pre-line font-normal">
-                {round.description}
-              </p>
-            </div>
-          </div>
+          <RoundCard round={round} />
         </motion.div>
 
         {/* Center Dot */}
@@ -87,7 +113,7 @@ const RoundItem = ({ round, index }) => {
           </div>
         </motion.div>
 
-        {/* Mode / Venue */}
+        {/* Mode / Venue / Date */}
         <motion.div
           className="w-5/12"
           initial={{ opacity: 0, x: isRight ? -70 : 70 }}
@@ -120,29 +146,7 @@ const RoundItem = ({ round, index }) => {
             {round.date}
           </p>
 
-          <div className="relative group">
-            <div
-              onMouseMove={handleCardMouseMove}
-              className="relative p-6 rounded-xl bg-[#FBF4F7] backdrop-blur-md border border-[#E38DA3]/30 shadow-md shadow-[#F3AFC0]/20 transition-all duration-300 group-hover:border-[#CF547A]/60 spotlight-card"
-              style={{
-                background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
-              }}
-            >
-              <h3 className="text-lg font-extrabold text-[#402327] tracking-wide">
-                {round.title}
-              </h3>
-
-              {round.subtitle && (
-                <p className="text-xs uppercase tracking-widest text-[#CF547A] mt-1 font-semibold">
-                  {round.subtitle}
-                </p>
-              )}
-
-              <p className="text-[#402327]/80 mt-4 leading-relaxed text-sm whitespace-pre-line font-normal">
-                {round.description}
-              </p>
-            </div>
-          </div>
+          <RoundCard round={round} />
         </div>
       </div>
     </motion.div>
@@ -182,34 +186,6 @@ Build, experiment, and bring your ideas to life as you race against the clock.`,
 
   return (
     <section className="relative overflow-hidden py-16">
-      {/* Decorative floating hearts */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-[#F3AFC0]"
-            style={{
-              left: `${5 + Math.random() * 90}%`,
-              top: `${5 + Math.random() * 90}%`,
-              fontSize: `${16 + Math.random() * 24}px`,
-              opacity: 0.15,
-            }}
-            animate={{
-              y: [0, -15, 0, 15, 0],
-              rotate: [0, 10, -10, 5, 0],
-            }}
-            transition={{
-              duration: 12 + Math.random() * 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 5,
-            }}
-          >
-            ♥
-          </motion.div>
-        ))}
-      </div>
-
       <div className="relative z-10 mt-12 mb-16 sm:mb-20 lg:mb-28">
         <div className="text-center mb-16">
           <h2 className="font-sans text-3xl sm:text-4xl font-black text-[#d26876] tracking-tight">

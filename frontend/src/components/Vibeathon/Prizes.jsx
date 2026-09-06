@@ -1,13 +1,76 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const handleCardMouseMove = (e) => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
-  e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+const PrizeCard = ({ item, isActive }) => {
+  const cardRef = useRef(null);
+  const [style, setStyle] = useState({});
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || !isActive) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    const rotateX = ((y / height) - 0.5) * -18;
+    const rotateY = ((x / width) - 0.5) * 18;
+
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+
+    setStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setStyle({
+      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+    });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        ...style,
+        background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
+      }}
+      className={`rounded-3xl p-8 min-h-[420px] flex flex-col transition-all duration-500 backdrop-blur-xl spotlight-card [transform-style:preserve-3d] ${
+        isActive
+          ? "scale-100 opacity-100 border border-[#CF547A]/50 shadow-2xl shadow-[#F3AFC0]/50 hover:border-[#CF547A]"
+          : "scale-90 opacity-30 blur-[1px] border border-[#E38DA3]/20 shadow-[#E38DA3]/10"
+      }`}
+    >
+      {/* Header */}
+      <div className="mb-6 [transform:translateZ(25px)]">
+        <p className="text-[10px] font-bold tracking-widest uppercase text-[#CF547A] mb-2">
+          {item.rank}
+        </p>
+        <h2 className="text-2xl font-extrabold text-[#402327]">
+          {item.x_id}
+        </h2>
+      </div>
+
+      <div className="w-full h-px bg-[#E38DA3]/30 mb-6" />
+
+      {/* Description */}
+      <p className="mb-6 flex-grow leading-relaxed whitespace-pre-line text-sm text-[#402327]/80 font-normal [transform:translateZ(15px)]">
+        {item.quote}
+      </p>
+
+      <div className="w-12 h-px bg-[#CE4777] mb-4" />
+
+      {/* Footer */}
+      <div className="[transform:translateZ(20px)]">
+        <h3 className="text-[#402327] text-base font-bold">
+          {item.name}
+        </h3>
+      </div>
+    </div>
+  );
 };
 
 const Prizes = () => {
@@ -121,33 +184,6 @@ const Prizes = () => {
 
   return (
     <section className="relative py-20 overflow-hidden w-full">
-      {/* Decorative floating hearts */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-        {[...Array(10)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-[#F3AFC0] select-none"
-            style={{
-              left: `${5 + Math.random() * 90}%`,
-              top: `${5 + Math.random() * 90}%`,
-              fontSize: `${14 + Math.random() * 22}px`,
-            }}
-            animate={{
-              y: [0, -12, 0, 12, 0],
-              rotate: [0, 8, -8, 4, 0],
-            }}
-            transition={{
-              duration: 10 + Math.random() * 12,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 6,
-            }}
-          >
-            ♥
-          </motion.div>
-        ))}
-      </div>
-
       <div className="relative flex items-center justify-center px-4">
         <div className="max-w-7xl w-full">
           {/* Header */}
@@ -180,45 +216,7 @@ const Prizes = () => {
                     key={`${item.id}-${index}`}
                     className="w-full lg:w-1/3 flex-shrink-0 px-3"
                   >
-                    <div
-                      onMouseMove={handleCardMouseMove}
-                      className={`rounded-3xl p-8 min-h-[420px] flex flex-col border transition-all duration-700 shadow-md ${
-                        isActive
-                          ? "scale-100 opacity-100 border-[#CF547A]/50 shadow-[#CF547A]/30"
-                          : "scale-90 opacity-30 blur-[1px] border-[#E38DA3]/20 shadow-[#E38DA3]/10"
-                      }`}
-                      style={{
-                        background: isActive
-                          ? "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)"
-                          : "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
-                      }}
-                    >
-                      {/* Header */}
-                      <div className="mb-6">
-                        <p className="text-[10px] font-bold tracking-widest uppercase text-[#CF547A] mb-2">
-                          {item.rank}
-                        </p>
-                        <h2 className="text-2xl font-extrabold text-[#402327]">
-                          {item.x_id}
-                        </h2>
-                      </div>
-
-                      <div className="w-full h-px bg-[#E38DA3]/30 mb-6" />
-
-                      {/* Description */}
-                      <p className="mb-6 flex-grow leading-relaxed whitespace-pre-line text-sm text-[#402327]/80 font-light">
-                        {item.quote}
-                      </p>
-
-                      <div className="w-12 h-px bg-[#CE4777] mb-4" />
-
-                      {/* Footer */}
-                      <div>
-                        <h3 className="text-[#402327] text-base font-semibold">
-                          {item.name}
-                        </h3>
-                      </div>
-                    </div>
+                    <PrizeCard item={item} isActive={isActive} />
                   </div>
                 );
               })}
@@ -228,7 +226,7 @@ const Prizes = () => {
             <div className="flex items-center justify-center gap-6 mt-16">
               <button
                 onClick={handlePrev}
-                className="rounded-full p-3 border border-[#E38DA3]/40 hover:bg-[#F4C4C9]/40 transition-colors text-[#402327] cursor-pointer"
+                className="rounded-full p-3 border border-[#E38DA3]/40 bg-[#F4C4C9]/20 hover:bg-[#CF547A] transition-colors text-[#402327] hover:text-white cursor-pointer"
               >
                 <ChevronLeft size={20} />
               </button>
@@ -254,7 +252,7 @@ const Prizes = () => {
 
               <button
                 onClick={handleNext}
-                className="rounded-full p-3 border border-[#E38DA3]/40 hover:bg-[#F4C4C9]/40 transition-colors text-[#402327] cursor-pointer"
+                className="rounded-full p-3 border border-[#E38DA3]/40 bg-[#F4C4C9]/20 hover:bg-[#CF547A] transition-colors text-[#402327] hover:text-white cursor-pointer"
               >
                 <ChevronRight size={20} />
               </button>

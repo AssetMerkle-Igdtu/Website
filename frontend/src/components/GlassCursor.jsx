@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const GlassCursor = () => {
   const [mounted, setMounted] = useState(false);
+  const location = useLocation();
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
@@ -24,6 +26,11 @@ const GlassCursor = () => {
       window.removeEventListener("mousemove", moveCursor);
     };
   }, [cursorX, cursorY]);
+
+  // Hide cursor on the SheVibes (/vibeathon) page
+  if (location.pathname === "/vibeathon") {
+    return null;
+  }
 
   if (!mounted) return null;
 

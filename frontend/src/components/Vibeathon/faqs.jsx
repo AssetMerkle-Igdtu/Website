@@ -1,11 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-const handleCardMouseMove = (e) => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
-  e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+const FAQCard = ({ faq, isOpen, onToggle }) => {
+  const cardRef = useRef(null);
+  const [style, setStyle] = useState({});
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+    const rotateX = ((y / height) - 0.5) * -15;
+    const rotateY = ((x / width) - 0.5) * 15;
+
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+
+    setStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setStyle({
+      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+    });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        ...style,
+        background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
+      }}
+      className="group rounded-3xl border border-[#E38DA3]/40 p-6 transition-all duration-300 ease-out spotlight-card shadow-xl shadow-[#F3AFC0]/30 hover:shadow-[#CF547A]/40 hover:border-[#CF547A]/60 [transform-style:preserve-3d]"
+    >
+      <button
+        onClick={onToggle}
+        className="w-full flex justify-between items-center text-left focus:outline-none group cursor-pointer"
+      >
+        <span className="text-lg sm:text-xl font-bold text-[#402327] group-hover:text-[#CE4777] transition-colors pr-8 [transform:translateZ(25px)]">
+          {faq.question}
+        </span>
+
+        <svg
+          className={`w-5 h-5 text-[#CE4777] transition-transform duration-300 ease-in-out flex-shrink-0 [transform:translateZ(20px)] ${
+            isOpen ? "transform rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-out ${
+          isOpen
+            ? "max-h-96 opacity-100 transform translate-y-0"
+            : "max-h-0 opacity-0 transform -translate-y-2"
+        }`}
+        style={{
+          transitionTimingFunction: isOpen
+            ? "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+            : "ease-out",
+        }}
+      >
+        <p className="text-sm sm:text-base text-[#402327]/80 leading-relaxed pt-4 font-normal [transform:translateZ(15px)]">
+          {faq.answer}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 const FAQs = () => {
@@ -86,24 +161,6 @@ const FAQs = () => {
       id="learn-more"
       className="py-24 px-4 sm:px-6 lg:px-8 w-full overflow-hidden relative"
     >
-      {/* Decorative floating hearts (light & cute) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-[#F3AFC0] select-none"
-            style={{
-              left: `${5 + Math.random() * 90}%`,
-              top: `${5 + Math.random() * 90}%`,
-              fontSize: `${14 + Math.random() * 22}px`,
-              transform: `rotate(${Math.random() * 20 - 10}deg)`,
-            }}
-          >
-            ♥
-          </div>
-        ))}
-      </div>
-
       <div className="relative max-w-4xl mx-auto">
         <h2 className="font-sans text-3xl sm:text-5xl font-black text-center mb-16 text-[#f58997] tracking-tight">
           Frequently Asked{" "}
@@ -114,57 +171,12 @@ const FAQs = () => {
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div
+            <FAQCard
               key={index}
-              onMouseMove={handleCardMouseMove}
-              className="group bg-[#FBF4F7] backdrop-blur-md rounded-2xl border border-[#E38DA3]/30 p-6 transition-all duration-300 spotlight-card shadow-sm hover:shadow-md hover:shadow-[#F3AFC0]/30 hover:border-[#CF547A]/40"
-              style={{
-                background: "linear-gradient(145deg, #FBF4F7 0%, #F7DFD4 100%)",
-              }}
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center text-left focus:outline-none group cursor-pointer"
-              >
-                <span className="text-lg sm:text-xl font-bold text-[#402327] pr-8">
-                  {faq.question}
-                </span>
-
-                <svg
-                  className={`w-5 h-5 text-[#CE4777] transition-transform duration-300 ease-in-out flex-shrink-0 ${
-                    openIndex === index ? "transform rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              <div
-                className={`overflow-hidden transition-all duration-500 ease-out ${
-                  openIndex === index
-                    ? "max-h-96 opacity-100 transform translate-y-0"
-                    : "max-h-0 opacity-0 transform -translate-y-2"
-                }`}
-                style={{
-                  transitionTimingFunction:
-                    openIndex === index
-                      ? "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-                      : "ease-out",
-                }}
-              >
-                <p className="text-sm sm:text-base text-[#402327]/80 leading-relaxed pt-4 font-light">
-                  {faq.answer}
-                </p>
-              </div>
-            </div>
+              faq={faq}
+              isOpen={openIndex === index}
+              onToggle={() => toggleFAQ(index)}
+            />
           ))}
         </div>
       </div>

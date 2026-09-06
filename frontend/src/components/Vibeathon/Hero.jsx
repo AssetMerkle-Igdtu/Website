@@ -56,65 +56,6 @@ const Hero = () => {
     getRegistrationCount();
   }, []);
 
-  // ─── Cute background elements ──────────────────────────────────────────────
-  const cuteElements = useMemo(() => {
-    const colors = ["#F3AFC0", "#F4C4C9", "#E38DA3", "#CF547A", "#CE4777"];
-    const types = ["petal", "heart", "star", "circle"];
-
-    const elements = [];
-    for (let i = 0; i < 50; i++) {
-      const type = types[Math.floor(Math.random() * types.length)];
-      const size = 12 + Math.random() * 28;
-      const left = Math.random() * 100;
-      const delay = Math.random() * 10;
-      const duration = 12 + Math.random() * 20;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const opacity = 0.2 + Math.random() * 0.3;
-      const rotate = Math.random() * 360;
-
-      let shape;
-      if (type === "petal") {
-        shape = (
-          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
-            <path d="M12 2C12 2 6 8 6 14c0 4 2 8 6 8s6-4 6-8c0-6-6-12-6-12z" />
-          </svg>
-        );
-      } else if (type === "heart") {
-        shape = (
-          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-        );
-      } else if (type === "star") {
-        shape = (
-          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
-            <path d="M12 2l2.5 7.5L22 9.5l-5.5 5.5L18 22l-6-4-6 4 1.5-7L2 9.5l7.5-1L12 2z" />
-          </svg>
-        );
-      } else {
-        shape = (
-          <div
-            className="rounded-full"
-            style={{ width: size, height: size, background: color, opacity }}
-          />
-        );
-      }
-
-      elements.push({
-        id: i,
-        left,
-        size,
-        delay,
-        duration,
-        rotate,
-        shape,
-        yOffset: -10 - Math.random() * 20,
-      });
-    }
-    return elements;
-  }, []);
-
-  // ─── Animations ────────────────────────────────────────────────────────────
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
@@ -156,45 +97,6 @@ const Hero = () => {
     <>
       {/* HERO SECTION */}
       <div className="relative text-[#402327] min-h-[90vh] flex items-center justify-center overflow-hidden w-full px-4">
-        {/* ─── CUTE BACKGROUND ELEMENTS ───────────────────────────── */}
-        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          {cuteElements.map((el) => (
-            <motion.div
-              key={el.id}
-              className="absolute"
-              style={{
-                left: `${el.left}%`,
-                width: el.size,
-                height: el.size,
-                rotate: el.rotate,
-              }}
-              initial={{ y: el.yOffset, x: 0, opacity: 0 }}
-              animate={{
-                y: ["-10vh", "110vh"],
-                x: [
-                  `-${Math.random() * 20}px`,
-                  `${Math.random() * 40 - 20}px`,
-                ],
-                rotate: [0, 360],
-                opacity: [0.2, 0.6, 0.2],
-              }}
-              transition={{
-                duration: el.duration,
-                delay: el.delay,
-                repeat: Infinity,
-                ease: "linear",
-                times: [0, 0.5, 1],
-              }}
-            >
-              {el.shape}
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Background glows – soft blush & light rose */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#F3AFC0]/20 rounded-full blur-3xl pointer-events-none z-0" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#F4C4C9]/20 rounded-full blur-3xl pointer-events-none z-0" />
-
         <div className="relative z-[2] w-full max-w-6xl mx-auto">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
@@ -216,38 +118,35 @@ const Hero = () => {
                 <h1 className="text-white">Vibeathon 2026</h1>
               </motion.div>
 
-              {/* Title */}
-              <motion.h1
+              {/* SheVibes Main Attraction Title */}
+              <motion.div
                 variants={fadeInUp}
-                className="font-sans text-2xl sm:text-3xl md:text-3xl lg:text-[38px] font-black tracking-tight leading-[1.1] text-white"
+                className="text-[#CE4777] w-full"
+              >
+                <h1 className="font-serif italic font-bold text-6xl md:text-7xl lg:text-8xl tracking-wide drop-shadow-md">
+                  SheVibes
+                </h1>
+              </motion.div>
+
+              {/* Subtitle */}
+              <motion.h2
+                variants={fadeInUp}
+                className="font-sans text-lg sm:text-xl md:text-2xl font-bold tracking-tight leading-snug text-white/90 mt-1"
               >
                 Ideas Made by{" "}
                 <span className="font-serif italic font-normal text-[#CF547A]">
                   Her
                 </span>
-                .<br />
-                Impact Made by{" "}
+                . Impact Made by{" "}
                 <span className="font-serif italic font-normal text-[#CF547A]">
                   Us
                 </span>
                 .
-              </motion.h1>
-
-              {/* SheVibes */}
-              <div className="w-full flex items-center justify-center relative">
-                <motion.div
-                  variants={fadeInUp}
-                  className="text-[#CE4777] w-full max-w-[600px] items-center scale-95 origin-left"
-                >
-                  <span className="font-serif italic font-bold text-6xl md:text-7xl lg:text-8xl tracking-wide">
-                    SheVibes
-                  </span>
-                </motion.div>
-              </div>
+              </motion.h2>
 
               <motion.div
                 variants={fadeInUp}
-                className="h-0.5 w-20 bg-gradient-to-r from-[#CF547A] to-[#CE4777] rounded-full"
+                className="h-0.5 w-20 bg-gradient-to-r from-[#CF547A] to-[#CE4777] rounded-full my-2"
               />
 
               <motion.p
