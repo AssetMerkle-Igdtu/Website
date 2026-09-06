@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { AMVibeathonEffect } from "@/components/ui/apple-hello-effect";
 import { fetchRegistrationCount } from "@/lib/teams";
 
 const Hero = () => {
@@ -57,6 +56,65 @@ const Hero = () => {
     getRegistrationCount();
   }, []);
 
+  // ─── Cute background elements ──────────────────────────────────────────────
+  const cuteElements = useMemo(() => {
+    const colors = ["#F3AFC0", "#F4C4C9", "#E38DA3", "#CF547A", "#CE4777"];
+    const types = ["petal", "heart", "star", "circle"];
+
+    const elements = [];
+    for (let i = 0; i < 50; i++) {
+      const type = types[Math.floor(Math.random() * types.length)];
+      const size = 12 + Math.random() * 28;
+      const left = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const duration = 12 + Math.random() * 20;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const opacity = 0.2 + Math.random() * 0.3;
+      const rotate = Math.random() * 360;
+
+      let shape;
+      if (type === "petal") {
+        shape = (
+          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
+            <path d="M12 2C12 2 6 8 6 14c0 4 2 8 6 8s6-4 6-8c0-6-6-12-6-12z" />
+          </svg>
+        );
+      } else if (type === "heart") {
+        shape = (
+          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        );
+      } else if (type === "star") {
+        shape = (
+          <svg viewBox="0 0 24 24" fill={color} opacity={opacity}>
+            <path d="M12 2l2.5 7.5L22 9.5l-5.5 5.5L18 22l-6-4-6 4 1.5-7L2 9.5l7.5-1L12 2z" />
+          </svg>
+        );
+      } else {
+        shape = (
+          <div
+            className="rounded-full"
+            style={{ width: size, height: size, background: color, opacity }}
+          />
+        );
+      }
+
+      elements.push({
+        id: i,
+        left,
+        size,
+        delay,
+        duration,
+        rotate,
+        shape,
+        yOffset: -10 - Math.random() * 20,
+      });
+    }
+    return elements;
+  }, []);
+
+  // ─── Animations ────────────────────────────────────────────────────────────
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,11 +142,11 @@ const Hero = () => {
   };
 
   const TimeUnit = ({ value, label }) => (
-    <div className="flex flex-col items-center bg-white/[0.06] border border-white/15 px-4 py-3 rounded-xl min-w-[64px] backdrop-blur-sm transition-all hover:border-amber-400/40 hover:bg-white/[0.10] shadow-lg shadow-amber-500/5">
-      <span className="text-3xl sm:text-4xl font-black text-white tabular-nums tracking-tight">
+    <div className="flex flex-col items-center bg-[#F4C4C9]/30 border border-[#E38DA3]/40 px-4 py-3 rounded-xl min-w-[64px] backdrop-blur-sm transition-all hover:border-[#CF547A]/60 hover:bg-[#F4C4C9]/50 shadow-lg shadow-[#F3AFC0]/30">
+      <span className="text-3xl sm:text-4xl font-black text-[#402327] tabular-nums tracking-tight">
         {value}
       </span>
-      <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-300 mt-1">
+      <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#402327]/70 mt-1">
         {label}
       </span>
     </div>
@@ -97,10 +155,45 @@ const Hero = () => {
   return (
     <>
       {/* HERO SECTION */}
-      <div className="relative text-white min-h-[90vh] flex items-center justify-center bg-transparent overflow-hidden w-full px-4">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative text-[#402327] min-h-[90vh] flex items-center justify-center overflow-hidden w-full px-4">
+        {/* ─── CUTE BACKGROUND ELEMENTS ───────────────────────────── */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          {cuteElements.map((el) => (
+            <motion.div
+              key={el.id}
+              className="absolute"
+              style={{
+                left: `${el.left}%`,
+                width: el.size,
+                height: el.size,
+                rotate: el.rotate,
+              }}
+              initial={{ y: el.yOffset, x: 0, opacity: 0 }}
+              animate={{
+                y: ["-10vh", "110vh"],
+                x: [
+                  `-${Math.random() * 20}px`,
+                  `${Math.random() * 40 - 20}px`,
+                ],
+                rotate: [0, 360],
+                opacity: [0.2, 0.6, 0.2],
+              }}
+              transition={{
+                duration: el.duration,
+                delay: el.delay,
+                repeat: Infinity,
+                ease: "linear",
+                times: [0, 0.5, 1],
+              }}
+            >
+              {el.shape}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Background glows – soft blush & light rose */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#F3AFC0]/20 rounded-full blur-3xl pointer-events-none z-0" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#F4C4C9]/20 rounded-full blur-3xl pointer-events-none z-0" />
 
         <div className="relative z-[2] w-full max-w-6xl mx-auto">
           <motion.div
@@ -117,35 +210,34 @@ const Hero = () => {
               {/* Badge */}
               <motion.div
                 variants={fadeInUp}
-                className="inline-flex items-center gap-2 bg-white/5 border border-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-medium text-amber-400 tracking-wider uppercase"
+                className="inline-flex items-center gap-2 bg-[#F4C4C9]/40 border border-[#E38DA3]/40 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-medium text-[#CF547A] tracking-wider uppercase"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                Vibeathon 2026
+                <span className="w-1.5 h-1.5 rounded-full bg-white text-white animate-pulse" />
+                <h1 className="text-white">Vibeathon 2026</h1>
               </motion.div>
 
-              {/* Title - now smaller */}
+              {/* Title */}
               <motion.h1
                 variants={fadeInUp}
-                className="font-sans text-2xl sm:text-3xl md:text-3xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white"
+                className="font-sans text-2xl sm:text-3xl md:text-3xl lg:text-[38px] font-black tracking-tight leading-[1.1] text-white"
               >
                 Ideas Made by{" "}
-                <span className="font-serif italic font-normal text-amber-400">
+                <span className="font-serif italic font-normal text-[#CF547A]">
                   Her
                 </span>
-                .
-                <br />
+                .<br />
                 Impact Made by{" "}
-                <span className="font-serif italic font-normal text-amber-400">
+                <span className="font-serif italic font-normal text-[#CF547A]">
                   Us
                 </span>
                 .
               </motion.h1>
 
-              {/* SheVibes — now larger */}
+              {/* SheVibes */}
               <div className="w-full flex items-center justify-center relative">
                 <motion.div
                   variants={fadeInUp}
-                  className="text-amber-400 w-full max-w-[600px] items-center scale-95 origin-left"
+                  className="text-[#CE4777] w-full max-w-[600px] items-center scale-95 origin-left"
                 >
                   <span className="font-serif italic font-bold text-6xl md:text-7xl lg:text-8xl tracking-wide">
                     SheVibes
@@ -155,23 +247,21 @@ const Hero = () => {
 
               <motion.div
                 variants={fadeInUp}
-                className="h-0.5 w-20 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full"
+                className="h-0.5 w-20 bg-gradient-to-r from-[#CF547A] to-[#CE4777] rounded-full"
               />
 
-              {/* Description - now with serif font and slightly larger */}
               <motion.p
                 variants={fadeInUp}
-                className="text-base sm:text-lg text-slate-300 max-w-lg leading-relaxed font-serif font-light italic"
+                className="text-base sm:text-lg text-white max-w-lg leading-relaxed font-serif font-light italic"
               >
                 A women-focused SheVibes vibeathon where fresh ideas meet
                 technology, creativity, and a community of women builders.
               </motion.p>
 
-              {/* Learn More (desktop) */}
               <motion.a
                 variants={fadeInUp}
                 href="#ps"
-                className="text-xs uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-colors mt-2 inline-flex items-center gap-2"
+                className="text-xs uppercase tracking-[0.2em] text-[#402327]/50 hover:text-[#CF547A] transition-colors mt-2 inline-flex items-center gap-2"
                 whileHover={{ x: 4 }}
               >
                 Learn More
@@ -198,45 +288,45 @@ const Hero = () => {
             >
               <motion.div
                 variants={fadeInUp}
-                className="w-full max-w-md bg-white/[0.04] backdrop-blur-xl border border-white/15 rounded-3xl p-7 sm:p-9 shadow-2xl shadow-amber-500/10 hover:border-white/25 transition-all duration-500 relative overflow-hidden"
+                className="w-full max-w-md bg-[#F7DFD4] backdrop-blur-xl border border-[#E38DA3]/40 rounded-3xl p-7 sm:p-9 shadow-2xl shadow-[#F3AFC0]/40 hover:border-[#CF547A]/30 transition-all duration-500 relative overflow-hidden"
               >
-                {/* Decorative glow - more vibrant */}
-                <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
+                {/* Decorative glows – soft & warm */}
+                <div className="absolute -top-32 -right-32 w-80 h-80 bg-[#F3AFC0]/25 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-[#F4C4C9]/25 rounded-full blur-3xl pointer-events-none" />
 
                 <div className="relative z-10 space-y-7">
                   {/* Card header */}
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium uppercase tracking-[0.2em] text-slate-300">
+                    <span className="text-sm font-medium uppercase tracking-[0.2em] text-[#402327]/60">
                       Registration
                     </span>
-                    <span className="text-xs font-mono uppercase tracking-widest text-amber-400/80 border border-amber-400/30 px-3 py-1 rounded-full bg-amber-400/5">
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#CF547A] border border-[#CF547A]/40 px-3 py-1 rounded-full bg-[#CF547A]/10">
                       Open
                     </span>
                   </div>
 
-                  {/* Countdown - now with larger units */}
+                  {/* Countdown */}
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-3 bg-white/[0.04] rounded-2xl px-5 py-4 border border-white/10">
+                    <div className="flex items-center justify-between gap-3 bg-[#F4C4C9]/20 rounded-2xl px-5 py-4 border border-[#E38DA3]/30">
                       <TimeUnit
                         value={String(timeLeft.days).padStart(2, "0")}
                         label="Days"
                       />
-                      <span className="text-lg font-bold text-slate-400 select-none">
+                      <span className="text-lg font-bold text-[#402327]/30 select-none">
                         :
                       </span>
                       <TimeUnit
                         value={String(timeLeft.hours).padStart(2, "0")}
                         label="Hours"
                       />
-                      <span className="text-lg font-bold text-slate-400 select-none">
+                      <span className="text-lg font-bold text-[#402327]/30 select-none">
                         :
                       </span>
                       <TimeUnit
                         value={String(timeLeft.minutes).padStart(2, "0")}
                         label="Mins"
                       />
-                      <span className="text-lg font-bold text-slate-400 select-none">
+                      <span className="text-lg font-bold text-[#402327]/30 select-none">
                         :
                       </span>
                       <TimeUnit
@@ -247,23 +337,23 @@ const Hero = () => {
                   </div>
 
                   {/* Divider */}
-                  <div className="border-t border-white/10" />
+                  <div className="border-t border-[#E38DA3]/30" />
 
-                  {/* Registration stats - larger fonts */}
+                  {/* Registration stats */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/[0.04] rounded-2xl px-5 py-4 border border-white/10 text-center">
-                      <div className="text-3xl font-black text-white">
+                    <div className="bg-[#FBF4F7]/60 rounded-2xl px-5 py-4 border border-[#E38DA3]/30 text-center">
+                      <div className="text-3xl font-black text-[#402327]">
                         {registrationCount}+
                       </div>
-                      <div className="text-xs uppercase tracking-[0.15em] text-slate-300 font-medium mt-1">
+                      <div className="text-xs uppercase tracking-[0.15em] text-[#402327]/60 font-medium mt-1">
                         Women Registered
                       </div>
                     </div>
-                    <div className="bg-white/[0.04] rounded-2xl px-5 py-4 border border-white/10 text-center">
-                      <div className="text-3xl font-black text-white">
+                    <div className="bg-[#FBF4F7]/60 rounded-2xl px-5 py-4 border border-[#E38DA3]/30 text-center">
+                      <div className="text-3xl font-black text-[#402327]">
                         2–4
                       </div>
-                      <div className="text-xs uppercase tracking-[0.15em] text-slate-300 font-medium mt-1">
+                      <div className="text-xs uppercase tracking-[0.15em] text-[#402327]/60 font-medium mt-1">
                         Team Size
                       </div>
                     </div>
@@ -275,7 +365,7 @@ const Hero = () => {
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.97 }}
-                        className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-bold py-4 rounded-2xl text-base tracking-wide shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 relative overflow-hidden group"
+                        className="w-full bg-gradient-to-r from-[#CF547A] to-[#CE4777] text-[#FBF4F7] font-bold py-4 rounded-2xl text-base tracking-wide shadow-lg shadow-[#CE4777]/40 hover:shadow-[#CE4777]/60 transition-all duration-300 relative overflow-hidden group"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           Register Now
@@ -297,17 +387,17 @@ const Hero = () => {
                       </motion.button>
                     </a>
 
-                    {/* ✦ Direct entry to AM web3 community - now more highlighted */}
+                    {/* Direct entry */}
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6, duration: 0.5 }}
-                      className="flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-400/30 rounded-xl px-5 py-3 shadow-lg shadow-amber-500/10"
+                      className="flex items-center justify-center gap-3 bg-[#F3AFC0]/20 border border-[#CF547A]/30 rounded-xl px-5 py-3 shadow-lg shadow-[#F3AFC0]/30"
                     >
-                      <span className="text-amber-400 text-base">✦</span>
-                      <span className="text-sm font-semibold text-amber-200 tracking-wide">
+                      <span className="text-[#CF547A] text-base">✦</span>
+                      <span className="text-sm font-semibold text-[#402327] tracking-wide">
                         Direct entry to{" "}
-                        <span className="font-extrabold text-amber-400 underline decoration-amber-400/30 underline-offset-2">
+                        <span className="font-extrabold text-[#CE4777] underline decoration-[#CE4777]/30 underline-offset-2">
                           AM Web3 community
                         </span>
                       </span>
@@ -315,7 +405,7 @@ const Hero = () => {
                   </div>
 
                   {/* PS */}
-                  <p className="text-[11px] font-mono tracking-[0.25em] uppercase text-slate-500/60 text-center pt-1">
+                  <p className="text-[11px] font-mono tracking-[0.25em] uppercase text-black text-center pt-1">
                     PS: To be announced
                   </p>
                 </div>

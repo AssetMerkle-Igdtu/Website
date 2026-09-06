@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import Tagline from "../components/Vibeathon/Tagline";
-import AMHacks from "../components/Vibeathon/HeroPrev";
 import FAQs from "../components/Vibeathon/faqs";
-import AMSponsi from "../components/Vibeathon/AMSponsi";
-import Prizes from "../components/Vibeathon/Testimonials";
-import Glimpses from "../components/Vibeathon/Glimpses";
+import Prizes from "../components/Vibeathon/Prizes";
 import Hero from "../components/Vibeathon/Hero";
 import RoundsTimeline from "../components/Vibeathon/RoundsTimeline";
 import Tracks from "../components/Vibeathon/Themes";
@@ -13,7 +10,7 @@ const VibeathonPage = () => {
 
   useEffect(() => {
     // Target date: 7 September 2026, 00:00:00 (local time)
-    const targetDate = new Date("2026-09-07T00:00:00");
+    const targetDate = new Date("2026-09-06T00:00:00");
     const now = new Date();
 
     if (now >= targetDate) {
@@ -25,7 +22,7 @@ const VibeathonPage = () => {
       {/* <AMHacks /> */}
       <Hero/>
       {showTracks && <Tracks />}
-      {/* <Tracks/> */}
+      {/* <Tracks/>  */}
       <RoundsTimeline />
       <Prizes />
       {/* <Glimpses /> */}

@@ -70,16 +70,17 @@ const Navbar = () => {
         </div>
 
         {/* Right: Action Button (White Pill) */}
-        <div className="hidden lg:block">
-          <Link
-            to="/vibeathon"
-            className="vibeathon-btn uppercase text-[12px] font-extrabold tracking-widest whitespace-nowrap"
-          >
-            <span className="vibeathon-span">
-              SheVibes
-            </span>
-          </Link>
-        </div>
+        {/* Desktop SheVibes button — vintage cream palette */}
+<div className="hidden lg:block">
+  <Link
+    to="/vibeathon"
+    className="relative group inline-flex items-center px-6 py-2.5 rounded-full bg-gradient-to-r from-[#CF547A] to-[#CE4777] text-[#FBF4F7] font-extrabold text-[12px] tracking-widest uppercase shadow-md shadow-[#CE4777]/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#CE4777]/50 active:scale-95"
+  >
+    <span className="relative z-10">SheVibes</span>
+    {/* Subtle shine effect */}
+    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+  </Link>
+</div>
 
         {/* Mobile Menu Button */}
         <div className="lg:hidden flex items-center pr-2">
