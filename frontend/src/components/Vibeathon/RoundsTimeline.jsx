@@ -55,7 +55,7 @@ const RoundItem = ({ round, index }) => {
                 </p>
               )}
 
-              <p className="text-[#402327]/70 mt-4 leading-relaxed text-sm sm:text-base whitespace-pre-line font-light">
+              <p className="text-[#402327]/80 mt-4 leading-relaxed text-sm sm:text-base whitespace-pre-line font-normal">
                 {round.description}
               </p>
             </div>
@@ -96,7 +96,7 @@ const RoundItem = ({ round, index }) => {
           viewport={{ once: true }}
         >
           <p
-            className={`font-bold text-lg text-[#ed94a0] ${
+            className={`font-extrabold text-xl sm:text-2xl text-[#ed94a0] tracking-wide drop-shadow-sm ${
               isRight ? "text-right" : "text-left"
             }`}
           >
@@ -116,7 +116,9 @@ const RoundItem = ({ round, index }) => {
         </div>
 
         <div className="w-full">
-          <p className="font-bold text-lg mb-3 text-[#CE4777]">{round.date}</p>
+          <p className="font-extrabold text-xl sm:text-2xl mb-3 text-[#CE4777] tracking-wide drop-shadow-sm">
+            {round.date}
+          </p>
 
           <div className="relative group">
             <div
@@ -136,7 +138,7 @@ const RoundItem = ({ round, index }) => {
                 </p>
               )}
 
-              <p className="text-[#402327]/70 mt-4 leading-relaxed text-sm whitespace-pre-line font-light">
+              <p className="text-[#402327]/80 mt-4 leading-relaxed text-sm whitespace-pre-line font-normal">
                 {round.description}
               </p>
             </div>
@@ -180,7 +182,7 @@ Build, experiment, and bring your ideas to life as you race against the clock.`,
 
   return (
     <section className="relative overflow-hidden py-16">
-      {/* Decorative floating hearts (same as Themes) */}
+      {/* Decorative floating hearts */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
         {[...Array(8)].map((_, i) => (
           <motion.div
@@ -217,7 +219,7 @@ Build, experiment, and bring your ideas to life as you race against the clock.`,
             </span>
           </h2>
 
-          <p className="text-[#402327]/60 mt-4 max-w-2xl mx-auto font-light">
+          <p className="text-[#ed94a0] sm:text-pink-200/90 mt-4 max-w-2xl mx-auto text-base sm:text-lg font-medium leading-relaxed tracking-wide">
             A step-by-step journey from idea submission to mentorship and the
             grand finale.
           </p>

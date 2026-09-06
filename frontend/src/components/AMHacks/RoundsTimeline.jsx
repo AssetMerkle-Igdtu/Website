@@ -64,7 +64,7 @@ const RoundItem = ({ round, index }) => {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <p className={`font-bold text-lg ${isRight ? "text-right" : "text-left"}`}>
+          <p className={`font-extrabold text-xl sm:text-2xl text-yellow-400 tracking-wide ${isRight ? "text-right" : "text-left"}`}>
             {round.date}
           </p>
         </motion.div>
@@ -90,7 +90,7 @@ const RoundItem = ({ round, index }) => {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <p className="font-bold text-lg mb-2 text-yellow-400">{round.date}</p>
+          <p className="font-extrabold text-xl sm:text-2xl mb-2 text-yellow-400 tracking-wide">{round.date}</p>
           <div className="p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 hover:border-yellow-500 transition">
             <h3 className="text-lg font-bold text-yellow-400">{round.title}</h3>
             {round.subtitle && (
@@ -148,7 +148,7 @@ Venue will be announced soon.`,
       {/* Heading */}
       <div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-bold text-yellow-400">Hackathon Rounds</h2>
-        <p className="text-gray-400 mt-3 max-w-2xl mx-auto">
+        <p className="text-gray-200 sm:text-gray-300 text-base sm:text-lg font-medium mt-3 max-w-2xl mx-auto tracking-wide">
           A step by step breakdown of the AM VibeAthon selection and evaluation process
         </p>
       </div>
