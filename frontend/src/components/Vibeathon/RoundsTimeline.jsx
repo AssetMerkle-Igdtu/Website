@@ -170,7 +170,8 @@ Put your ideas, skills, and creativity to the test as you work on the challenge 
     {
       title: "Round 3: The Build",
       subtitle: "Offline",
-      date: "23 September",
+      date: "To be Announced",
+      // date: "23 September",
       description: `The Grand Finale: To be Announced.
 
 Shortlisted teams will take on an 8-hour Vibeathon challenge.
