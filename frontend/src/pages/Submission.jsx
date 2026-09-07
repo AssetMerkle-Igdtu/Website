@@ -21,7 +21,7 @@ const sections = [
         maxLength: 100,
       },
       {
-        id: "projectTheme",
+        id: "theme",
         label: "Project Theme",
         type: "select",
         placeholder: "Select your chosen theme",
@@ -90,7 +90,7 @@ const sections = [
         maxLength: 500,
       },
       {
-        id: "ppt",
+        id: "pptLink",
         label: "PPT",
         type: "url",
         placeholder: "https://drive.google.com/...",
@@ -109,12 +109,14 @@ const allFields = sections.flatMap((section) => section.fields);
 
 const EMPTY_FORM = {
   projectName: "",
+  theme:"",
   problemStatement: "",
   projectDescription: "",
   githubRepo: "",
   figmaLink: "",
   liveDemoLink: "",
   demoVideoLink: "",
+  pptLink:"",
 };
 
 // ============================================================
@@ -277,12 +279,14 @@ const Submission = () => {
             team_id,
             submitted_by,
             problem_statement,
+            theme,
             project_name,
             project_description,
             github_repo,
             figma_link,
             live_demo_link,
             demo_video_link,
+            ppt_link,
             status,
             created_at
           `
@@ -303,6 +307,7 @@ const Submission = () => {
 
         setFormData({
           projectName: existingSubmission.project_name || "",
+          theme: existingSubmission.theme || "",
           problemStatement:
             existingSubmission.problem_statement || "",
           projectDescription:
@@ -315,6 +320,8 @@ const Submission = () => {
             existingSubmission.live_demo_link || "",
           demoVideoLink:
             existingSubmission.demo_video_link || "",
+          pptLink:
+            existingSubmission.ppt_link || "",
         });
 
         return;
@@ -461,12 +468,14 @@ const Submission = () => {
 
       const sharedFields = {
         project_name: formData.projectName.trim(),
+        theme: formData.theme.trim(),
         problem_statement: formData.problemStatement.trim(),
         project_description: formData.projectDescription.trim(),
         github_repo: formData.githubRepo.trim(),
         figma_link: formData.figmaLink.trim(),
         live_demo_link: formData.liveDemoLink.trim(),
         demo_video_link: formData.demoVideoLink.trim(),
+        ppt_link: formData.pptLink.trim(),
         status: "submitted",
       };
 
@@ -763,21 +772,36 @@ const Submission = () => {
         </label>
 
         {field.type === "textarea" ? (
-          <textarea
+        <textarea
+          id={field.id}
+          rows={field.rows || 4}
+          placeholder={field.placeholder}
+          value={value}
+          maxLength={field.maxLength}
+          onChange={(event) =>
+            handleChange(field.id, event.target.value)
+          }
+          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 transition-all resize-none"
+        />
+        ) : field.type === "select" ? (
+          <select
             id={field.id}
-            rows={field.rows || 4}
-            placeholder={field.placeholder}
             value={value}
-            maxLength={field.maxLength}
             onChange={(event) =>
-              handleChange(
-                field.id,
-                event.target.value
-              )
+              handleChange(field.id, event.target.value)
             }
+            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 transition-all"
+          >
+            <option value="" disabled>
+              {field.placeholder}
+            </option>
 
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 transition-all resize-none"
-          />
+            {field.options.map((option) => (
+              <option key={option} value={option} className="bg-black">
+                {option}
+              </option>
+            ))}
+          </select>
         ) : (
           <input
             id={field.id}
@@ -786,10 +810,7 @@ const Submission = () => {
             value={value}
             maxLength={field.maxLength}
             onChange={(event) =>
-              handleChange(
-                field.id,
-                event.target.value
-              )
+              handleChange(field.id, event.target.value)
             }
             className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500/50 transition-all"
           />
