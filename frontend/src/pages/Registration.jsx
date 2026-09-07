@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import GridBackground from "../components/GridBackground";
+import MoltenMetal from "../components/MoltenMetal";
 import { useAuth } from "../context/AuthContext";
 import {
   fetchMyProfile,
@@ -67,13 +68,34 @@ const ErrorBanner = ({ message }) =>
 
 const Spinner = ({ className = "w-8 h-8" }) => (
   <div
-    className={`${className} border-2 border-yellow-500/30 border-t-yellow-400 rounded-full animate-spin`}
+    className={`${className} border-2 border-[#CF547A]/30 border-t-[#E38DA3] rounded-full animate-spin`}
   />
 );
 
 const PageShell = ({ eyebrow, title, subtitle, children, wide }) => (
-  <div className="relative min-h-screen bg-black text-white overflow-hidden">
-    <GridBackground />
+  <div className="relative min-h-screen bg-[#050507] text-white overflow-hidden">
+    {/* Background MoltenMetal for SheVibes Theme */}
+    <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+      <MoltenMetal
+        color1="#e41ade"
+        color2="#FF9FFC"
+        color3="#FFFFFF"
+        colorMode="molten"
+        speed={0.35}
+        scale={4}
+        detail={3}
+        glow={1.6}
+        coreSize={0.1}
+        swirl={1}
+        fold={-0.2}
+        blackPoint={0.05}
+        brightness={1.3}
+        opacity={0.85}
+        grain
+        grainIntensity={0.05}
+      />
+    </div>
+
     <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -82,17 +104,17 @@ const PageShell = ({ eyebrow, title, subtitle, children, wide }) => (
         className={`w-full ${wide ? "max-w-3xl" : "max-w-md"}`}
       >
         <div className="text-center mb-8">
-          <p className="text-yellow-400 uppercase tracking-[0.3em] text-xs font-semibold mb-3">
+          <p className="text-[#E38DA3] uppercase tracking-[0.3em] text-xs font-semibold mb-3 drop-shadow">
             {eyebrow}
           </p>
-          <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-amber-500">
+          <h1 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#F4C4C9] via-[#E38DA3] to-[#CF547A] drop-shadow-[0_0_20px_rgba(207,84,122,0.4)]">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-gray-400 mt-3 max-w-md mx-auto">{subtitle}</p>
+            <p className="text-gray-300 mt-3 max-w-md mx-auto">{subtitle}</p>
           )}
         </div>
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-yellow-900/10 p-8 md:p-10">
+        <div className="bg-[#120c18]/80 backdrop-blur-xl border border-[#CF547A]/30 rounded-2xl shadow-2xl shadow-[#CF547A]/20 p-8 md:p-10">
           {children}
         </div>
       </motion.div>
@@ -107,12 +129,12 @@ const InputField = ({ icon: Icon, label, hint, ...props }) => (
       {hint && <span className="text-xs text-gray-500">{hint}</span>}
     </label>
     <div className="relative">
-      <div className="absolute top-1/2 left-4 -translate-y-1/2 text-yellow-400/50 pointer-events-none">
+      <div className="absolute top-1/2 left-4 -translate-y-1/2 text-[#E38DA3]/60 pointer-events-none">
         <Icon size={18} />
       </div>
       <input
         {...props}
-        className="w-full bg-black/30 border border-white/10 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-black/40 border border-[#CF547A]/30 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E38DA3] focus:ring-1 focus:ring-[#E38DA3] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
       />
     </div>
   </div>
@@ -411,10 +433,10 @@ const Registration = () => {
             disabled={busy}
             whileHover={!busy ? { scale: 1.02 } : {}}
             whileTap={!busy ? { scale: 0.98 } : {}}
-            className={`w-full py-3 px-6 rounded-lg font-semibold text-lg text-black transition-all duration-300 ${
+            className={`w-full py-3 px-6 rounded-lg font-semibold text-lg text-white transition-all duration-300 ${
               busy
                 ? "bg-gray-600 cursor-not-allowed"
-                : "bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 shadow-lg shadow-yellow-500/20"
+                : "bg-gradient-to-r from-[#E38DA3] to-[#CF547A] hover:from-[#F4C4C9] hover:to-[#E38DA3] shadow-lg shadow-[#CF547A]/30"
             }`}
           >
             {busy ? "Saving..." : "Save & Continue"}
@@ -423,7 +445,7 @@ const Registration = () => {
 
         <button
           onClick={signOut}
-          className="w-full flex items-center justify-center gap-2 text-xs text-gray-500 hover:text-yellow-400 transition-colors mt-6"
+          className="w-full flex items-center justify-center gap-2 text-xs text-gray-400 hover:text-[#E38DA3] transition-colors mt-6"
         >
           <LogOut size={14} /> Not you? Sign out
         </button>
@@ -447,8 +469,8 @@ const Registration = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Form a team */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col">
-            <div className="w-12 h-12 rounded-full bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center mb-4">
-              <Crown className="text-yellow-400" size={22} />
+            <div className="w-12 h-12 rounded-full bg-[#CF547A]/15 border border-[#CF547A]/30 flex items-center justify-center mb-4">
+              <Crown className="text-[#E38DA3]" size={22} />
             </div>
             <h3 className="text-lg font-bold mb-1">Form a Team</h3>
             <p className="text-sm text-gray-400 mb-6 flex-1">
@@ -460,7 +482,7 @@ const Registration = () => {
               disabled={busy}
               whileHover={!busy ? { scale: 1.02 } : {}}
               whileTap={!busy ? { scale: 0.98 } : {}}
-              className="w-full py-3 px-4 rounded-lg font-semibold text-black bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 transition-all duration-300 disabled:opacity-60"
+              className="w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r from-[#E38DA3] to-[#CF547A] hover:from-[#F4C4C9] hover:to-[#E38DA3] transition-all duration-300 disabled:opacity-60 shadow-md shadow-[#CF547A]/20"
             >
               {busy ? "Creating..." : "Create Team"}
             </motion.button>
@@ -468,8 +490,8 @@ const Registration = () => {
 
           {/* Join a team */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col">
-            <div className="w-12 h-12 rounded-full bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center mb-4">
-              <UserPlus className="text-yellow-400" size={22} />
+            <div className="w-12 h-12 rounded-full bg-[#CF547A]/15 border border-[#CF547A]/30 flex items-center justify-center mb-4">
+              <UserPlus className="text-[#E38DA3]" size={22} />
             </div>
             <h3 className="text-lg font-bold mb-1">Join a Team</h3>
             <p className="text-sm text-gray-400 mb-4 flex-1">
@@ -477,14 +499,14 @@ const Registration = () => {
             </p>
             <form onSubmit={handleJoinTeam} className="space-y-3">
               <div className="relative">
-                <div className="absolute top-1/2 left-4 -translate-y-1/2 text-yellow-400/50 pointer-events-none">
+                <div className="absolute top-1/2 left-4 -translate-y-1/2 text-[#E38DA3]/60 pointer-events-none">
                   <KeyRound size={18} />
                 </div>
                 <input
                   value={joinCode}
                   onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                  placeholder="AMH-X7K9P"
-                  className="w-full bg-black/30 border border-white/10 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 tracking-widest uppercase"
+                  placeholder="SHE-X7K9P"
+                  className="w-full bg-black/40 border border-[#CF547A]/30 rounded-lg pl-11 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E38DA3] focus:ring-1 focus:ring-[#E38DA3] transition-all duration-300 tracking-widest uppercase"
                 />
               </div>
               <motion.button
@@ -492,7 +514,7 @@ const Registration = () => {
                 disabled={busy}
                 whileHover={!busy ? { scale: 1.02 } : {}}
                 whileTap={!busy ? { scale: 0.98 } : {}}
-                className="w-full py-3 px-4 rounded-lg font-semibold border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-300 disabled:opacity-60"
+                className="w-full py-3 px-4 rounded-lg font-semibold border-2 border-[#E38DA3] text-[#E38DA3] hover:bg-[#E38DA3] hover:text-white transition-all duration-300 disabled:opacity-60"
               >
                 {busy ? "Joining..." : "Join Team"}
               </motion.button>
@@ -526,24 +548,24 @@ const Registration = () => {
         {/* Code + count */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
           <div>
-            <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">
+            <p className="text-xs uppercase tracking-widest text-gray-400 mb-1">
               Team Code
             </p>
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-bold tracking-widest text-yellow-400">
+              <span className="text-2xl font-bold tracking-widest text-[#E38DA3]">
                 {team.code}
               </span>
               <button
                 onClick={handleCopyCode}
-                className="p-2 rounded-lg border border-white/10 hover:border-yellow-400 hover:text-yellow-400 transition-colors"
+                className="p-2 rounded-lg border border-white/10 hover:border-[#E38DA3] hover:text-[#E38DA3] transition-colors"
                 aria-label="Copy team code"
               >
                 {copied ? <Check size={16} /> : <Copy size={16} />}
               </button>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-black/30 border border-white/10 px-4 py-2 rounded-lg">
-            <Users size={18} className="text-yellow-400" />
+          <div className="flex items-center gap-2 bg-black/40 border border-white/10 px-4 py-2 rounded-lg">
+            <Users size={18} className="text-[#E38DA3]" />
             <span className="font-semibold">
               {team.members.length}/4 members
             </span>
@@ -551,8 +573,8 @@ const Registration = () => {
         </div>
 
         {!isEligible && (
-          <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/10 px-4 py-3 mb-6">
-            <p className="text-yellow-300 text-sm text-center">
+          <div className="rounded-lg border border-[#CF547A]/30 bg-[#CF547A]/10 px-4 py-3 mb-6">
+            <p className="text-[#F4C4C9] text-sm text-center">
               Waiting for teammates — share code{" "}
               <span className="font-semibold">{team.code}</span> to reach the
               minimum of 2.
@@ -571,13 +593,13 @@ const Registration = () => {
                 <p className="font-medium">
                   {m.name || "Unnamed participant"}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-400">
                   {m.github}
                   {m.college ? ` · ${m.college}` : ""}
                 </p>
               </div>
               {m.role === "leader" && (
-                <span className="flex items-center gap-1 text-xs font-semibold text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 px-2 py-1 rounded-full">
+                <span className="flex items-center gap-1 text-xs font-semibold text-[#E38DA3] bg-[#CF547A]/15 border border-[#CF547A]/30 px-2 py-1 rounded-full">
                   <Crown size={12} /> Leader
                 </span>
               )}
@@ -591,14 +613,14 @@ const Registration = () => {
               onClick={() => navigate("/submit")}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold text-lg text-black bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 shadow-lg shadow-yellow-500/20 transition-all duration-300"
+              className="w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold text-lg text-white bg-gradient-to-r from-[#E38DA3] to-[#CF547A] hover:from-[#F4C4C9] hover:to-[#E38DA3] shadow-lg shadow-[#CF547A]/30 transition-all duration-300"
             >
               Continue to Submission <ArrowRight size={18} />
             </motion.button>
           ) : (
             <Link
               to="/"
-              className="inline-flex items-center justify-center w-auto py-3 px-6 rounded-lg font-semibold text-lg border-2 border-white/10 text-gray-400 hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
+              className="inline-flex items-center justify-center w-auto py-3 px-6 rounded-lg font-semibold text-lg border-2 border-white/10 text-gray-300 hover:border-[#E38DA3] hover:text-[#E38DA3] transition-all duration-300"
             >
               Back to Home
             </Link>
