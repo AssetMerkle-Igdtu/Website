@@ -11,6 +11,7 @@ import Teams from "./pages/Teams";
 import Docs from "./pages/Docs";
 import AMHacksPage from "./pages/AMHacksPage";
 import VibeathonPage from "./pages/vibeathon";
+import SheVibesCursivePage from "./pages/SheVibesCursivePage";
 import Submission from "./pages/Submission";
 import Registration from "./pages/Registration";
 import RequireTeam from "./components/RequireTeam";
@@ -47,6 +48,7 @@ function App() {
           
           <Route path="amhacks" element={<AMHacksPage />} />
           <Route path="vibeathon" element={<VibeathonPage />} />
+          <Route path="shevibes-font" element={<SheVibesCursivePage />} />
 
           {/* Registration flow: Google OAuth redirects here, and Registration.jsx
               itself handles every phase (loading -> profile form -> team page)

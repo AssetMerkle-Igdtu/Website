@@ -118,14 +118,19 @@ const Hero = () => {
                 <h1 className="text-white">Vibeathon 2026</h1>
               </motion.div>
 
-              {/* SheVibes Main Attraction Title */}
+              {/* SheVibes Main Title (Fredericka the Great Font - Static & Clean) */}
               <motion.div
                 variants={fadeInUp}
-                className="text-[#CE4777] w-full"
+                className="w-full my-1 overflow-visible"
               >
-                <h1 className="font-serif italic font-bold text-6xl md:text-7xl lg:text-8xl tracking-wide drop-shadow-md">
-                  SheVibes
-                </h1>
+                <div className="relative group inline-block py-4 px-2 overflow-visible">
+                  <h1
+                    className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl py-2 px-1 leading-relaxed tracking-wide bg-gradient-to-r from-[#F4C4C9] via-[#E38DA3] to-[#CF547A] bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(207,84,122,0.4)] select-none overflow-visible"
+                    style={{ fontFamily: "'Fredericka the Great', cursive", fontStyle: "normal" }}
+                  >
+                    SheVibes
+                  </h1>
+                </div>
               </motion.div>
 
               {/* Subtitle */}
