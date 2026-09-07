@@ -72,7 +72,7 @@ const Spinner = ({ className = "w-8 h-8" }) => (
   />
 );
 
-const PageShell = ({ eyebrow, title, subtitle, children, wide, onSignOut }) => (
+const PageShell = ({ eyebrow, title, subtitle, children, wide }) => (
   <div className="relative min-h-screen bg-[#050507] text-white overflow-hidden">
     {/* Background MoltenMetal for SheVibes Theme */}
     <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
@@ -96,23 +96,13 @@ const PageShell = ({ eyebrow, title, subtitle, children, wide, onSignOut }) => (
       />
     </div>
 
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20">
+    <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`w-full ${wide ? "max-w-3xl" : "max-w-md"}`}
       >
-        {onSignOut && (
-          <div className="flex justify-end mb-3">
-            <button
-              onClick={onSignOut}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white bg-[#120c18]/80 hover:bg-[#CF547A]/30 border border-[#CF547A]/40 px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-xl shadow-md cursor-pointer"
-            >
-              <LogOut size={14} className="text-[#E38DA3]" /> Log Out
-            </button>
-          </div>
-        )}
         <div className="text-center mb-8">
           <p className="text-[#E38DA3] uppercase tracking-[0.3em] text-xs font-semibold mb-3 drop-shadow">
             {eyebrow}
@@ -363,7 +353,6 @@ const Registration = () => {
         eyebrow="Step 1 of 2"
         title="Your Details"
         subtitle="Tell us a bit about yourself. You'll pick or form a team next."
-        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
         <form onSubmit={handleProfileSubmit} className="space-y-5">
@@ -390,44 +379,33 @@ const Registration = () => {
             onChange={(e) => setGithub(e.target.value)}
             required
           />
-          {/* <InputField
-            icon={School}
-            label="College"
-            placeholder="Your college / university"
-            value={college}
-            onChange={(e) => setCollege(e.target.value)}
-            required
-          /> */}
           <div>
-  <InputField
-    icon={School}
-    label="College"
-    placeholder="IGDTUW"
-    value="IGDTUW"
-    disabled
-    required
-  />
+            <InputField
+              icon={School}
+              label="College"
+              placeholder="IGDTUW"
+              value="IGDTUW"
+              disabled
+              required
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Only students from IGDTUW are eligible.
+            </p>
+          </div>
 
-  <p className="mt-1 text-sm text-gray-500">
-    Only students from IGDTUW are eligible.
-  </p>
-</div>
-
-<div className="mt-4">
-  <InputField
-    icon={School}
-    label="Grade"
-    placeholder="1st Year"
-    value="1st Year"
-    disabled
-    required
-  />
-
-  <p className="mt-1 text-sm text-gray-500">
-    Only first-year students are eligible.
-  </p>
-</div>
-
+          <div className="mt-4">
+            <InputField
+              icon={School}
+              label="Grade"
+              placeholder="1st Year"
+              value="1st Year"
+              disabled
+              required
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Only first-year students are eligible.
+            </p>
+          </div>
         
           <InputField
             icon={Phone}
@@ -454,12 +432,14 @@ const Registration = () => {
           </motion.button>
         </form>
 
-        <button
-          onClick={signOut}
-          className="w-full flex items-center justify-center gap-2 text-xs text-gray-400 hover:text-[#E38DA3] transition-colors mt-6"
-        >
-          <LogOut size={14} /> Not you? Sign out
-        </button>
+        <div className="flex justify-center mt-6 pt-4 border-t border-white/10">
+          <button
+            onClick={signOut}
+            className="inline-flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white bg-[#120c18]/80 hover:bg-[#CF547A]/30 border border-[#CF547A]/40 px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-xl shadow-md cursor-pointer"
+          >
+            <LogOut size={14} className="text-[#E38DA3]" /> Log Out
+          </button>
+        </div>
       </PageShell>
     );
   }
@@ -475,7 +455,6 @@ const Registration = () => {
         title="Form or Join a Team"
         subtitle="Teams need 2–4 members. Create one and share the code, or join with a code you already have."
         wide
-        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -538,9 +517,9 @@ const Registration = () => {
           <span>Signed in as <strong className="text-white">{user?.email}</strong></span>
           <button
             onClick={signOut}
-            className="flex items-center gap-1.5 text-gray-400 hover:text-red-400 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white bg-[#120c18]/80 hover:bg-[#CF547A]/30 border border-[#CF547A]/40 px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-xl shadow-md cursor-pointer"
           >
-            <LogOut size={14} /> Log Out
+            <LogOut size={14} className="text-[#E38DA3]" /> Log Out
           </button>
         </div>
       </PageShell>
@@ -564,7 +543,6 @@ const Registration = () => {
             : "Share your code below — you need at least 2 members to submit."
         }
         wide
-        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
 
@@ -658,7 +636,7 @@ const Registration = () => {
             <div className="bg-gradient-to-br from-amber-500/15 via-pink-500/10 to-purple-500/15 border border-amber-500/30 rounded-2xl p-5 text-left backdrop-blur-md shadow-xl flex flex-col justify-between space-y-3">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm tracking-wide">
-                  <span>🧠⚡</span> Big Twist Dropping Soon!
+                  Big Twist Dropping Soon!
                 </div>
                 <p className="text-xs text-gray-200 leading-relaxed font-normal">
                   A big twist is dropping in the next 1–2 days. Till then, keep brainstorming, experimenting & building!
@@ -691,9 +669,9 @@ const Registration = () => {
               </button>
               <button
                 onClick={signOut}
-                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white bg-[#120c18]/80 hover:bg-[#CF547A]/30 border border-[#CF547A]/40 px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-xl shadow-md cursor-pointer"
               >
-                <LogOut size={14} /> Log Out
+                <LogOut size={14} className="text-[#E38DA3]" /> Log Out
               </button>
             </div>
           </div>

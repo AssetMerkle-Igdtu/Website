@@ -1020,7 +1020,7 @@ const Submission = () => {
             <div className="bg-gradient-to-br from-amber-500/15 via-pink-500/10 to-purple-500/15 border border-amber-500/30 rounded-2xl p-5 text-left backdrop-blur-md shadow-xl flex flex-col justify-between space-y-3">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm tracking-wide">
-                  <span>🧠⚡</span> Big Twist Dropping Soon!
+                  Big Twist Dropping Soon!
                 </div>
                 <p className="text-xs text-gray-200 leading-relaxed font-normal">
                   A big twist is dropping in the next 1–2 days. Till then, keep brainstorming, experimenting & building!
