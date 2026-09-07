@@ -993,48 +993,50 @@ const Submission = () => {
             </motion.div>
           )}
 
-          {/* SUBMIT / UPDATE BUTTON */}
-
-          <div className="space-y-3">
-            <motion.button
-              type="submit"
-              disabled={submitting}
-              whileHover={
-                !submitting
-                  ? { scale: 1.02 }
-                  : {}
-              }
-              whileTap={
-                !submitting
-                  ? { scale: 0.98 }
-                  : {}
-              }
-              className={`w-full py-4 px-6 rounded-xl font-semibold text-lg text-black transition-all duration-300 ${
-                submitting
-                  ? "bg-gray-600 cursor-not-allowed"
-                  : "bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 shadow-lg shadow-yellow-500/20"
-              }`}
-            >
-              {submitting ? (
-                <span className="flex items-center justify-center gap-3">
-                  <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-
-                  {submission
-                    ? "Updating..."
-                    : "Submitting..."}
+          {/* SUBMIT / UPDATE BUTTON & TWIST ANNOUNCEMENT */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch pt-2">
+            {/* Box 1: Disabled Submit Button */}
+            <div className="flex flex-col justify-between bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm space-y-4">
+              <div className="space-y-2">
+                <span className="text-xs uppercase font-mono tracking-widest text-gray-400 font-bold block">
+                  Submission Status
                 </span>
-              ) : submission ? (
-                "Update Submission"
-              ) : (
-                "Submit Project"
-              )}
-            </motion.button>
+                <button
+                  type="button"
+                  disabled={true}
+                  className="w-full py-4 px-6 rounded-xl font-bold text-base text-gray-300 bg-gray-600/60 border border-gray-500/40 cursor-not-allowed shadow-inner transition-all flex items-center justify-center gap-2"
+                >
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                  Submit Project (Paused)
+                </button>
+              </div>
 
-            <p className="text-center text-xs text-gray-500">
-              {submission
-                ? "Your changes will replace your team's previous response."
-                : "Make sure all links are publicly accessible before submitting."}
-            </p>
+              <p className="text-center text-xs text-gray-400 font-medium">
+                ⚠️ Submissions are disabled until the twist is revealed.
+              </p>
+            </div>
+
+            {/* Box 2: Crisp Twist Announcement Box */}
+            <div className="bg-gradient-to-br from-amber-500/15 via-pink-500/10 to-purple-500/15 border border-amber-500/30 rounded-2xl p-5 text-left backdrop-blur-md shadow-xl flex flex-col justify-between space-y-3">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm tracking-wide">
+                  <span>🧠⚡</span> Big Twist Dropping Soon!
+                </div>
+                <p className="text-xs text-gray-200 leading-relaxed font-normal">
+                  A big twist is dropping in the next 1–2 days. Till then, keep brainstorming, experimenting & building!
+                </p>
+                <div className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 rounded-xl p-2.5">
+                  ⚠️ <strong>DON’T SUBMIT YET.</strong> Submissions open after the twist is revealed.
+                </div>
+                <p className="text-[11px] text-gray-300 leading-normal">
+                  📁 <strong>For submissions:</strong> PPT + coded prototype + demo video + anything else that strengthens your idea. We'll consider everything!
+                </p>
+              </div>
+
+              <div className="text-xs font-extrabold text-pink-400 pt-2 border-t border-white/10 flex items-center justify-between">
+                <span>Think unique. Build crazy. 🔥</span>
+              </div>
+            </div>
           </div>
         </motion.form>
       </div>

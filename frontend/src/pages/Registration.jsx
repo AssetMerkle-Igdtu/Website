@@ -72,7 +72,7 @@ const Spinner = ({ className = "w-8 h-8" }) => (
   />
 );
 
-const PageShell = ({ eyebrow, title, subtitle, children, wide }) => (
+const PageShell = ({ eyebrow, title, subtitle, children, wide, onSignOut }) => (
   <div className="relative min-h-screen bg-[#050507] text-white overflow-hidden">
     {/* Background MoltenMetal for SheVibes Theme */}
     <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
@@ -96,13 +96,23 @@ const PageShell = ({ eyebrow, title, subtitle, children, wide }) => (
       />
     </div>
 
-    <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-24">
+    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`w-full ${wide ? "max-w-3xl" : "max-w-md"}`}
       >
+        {onSignOut && (
+          <div className="flex justify-end mb-3">
+            <button
+              onClick={onSignOut}
+              className="inline-flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white bg-[#120c18]/80 hover:bg-[#CF547A]/30 border border-[#CF547A]/40 px-3.5 py-1.5 rounded-full transition-all duration-300 backdrop-blur-xl shadow-md cursor-pointer"
+            >
+              <LogOut size={14} className="text-[#E38DA3]" /> Log Out
+            </button>
+          </div>
+        )}
         <div className="text-center mb-8">
           <p className="text-[#E38DA3] uppercase tracking-[0.3em] text-xs font-semibold mb-3 drop-shadow">
             {eyebrow}
@@ -353,6 +363,7 @@ const Registration = () => {
         eyebrow="Step 1 of 2"
         title="Your Details"
         subtitle="Tell us a bit about yourself. You'll pick or form a team next."
+        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
         <form onSubmit={handleProfileSubmit} className="space-y-5">
@@ -464,6 +475,7 @@ const Registration = () => {
         title="Form or Join a Team"
         subtitle="Teams need 2–4 members. Create one and share the code, or join with a code you already have."
         wide
+        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -521,6 +533,16 @@ const Registration = () => {
             </form>
           </div>
         </div>
+
+        <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+          <span>Signed in as <strong className="text-white">{user?.email}</strong></span>
+          <button
+            onClick={signOut}
+            className="flex items-center gap-1.5 text-gray-400 hover:text-red-400 transition-colors"
+          >
+            <LogOut size={14} /> Log Out
+          </button>
+        </div>
       </PageShell>
     );
   }
@@ -542,6 +564,7 @@ const Registration = () => {
             : "Share your code below — you need at least 2 members to submit."
         }
         wide
+        onSignOut={signOut}
       >
         <ErrorBanner message={error} />
 
@@ -626,14 +649,25 @@ const Registration = () => {
             </Link>
           )}
 
-          <div className="pt-6 mt-3 border-t border-white/5 text-center">
-            <button
-              onClick={handleLeaveTeam}
-              disabled={busy}
-              className="text-xs text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
-            >
-              Leave team
-            </button>
+          <div className="pt-6 mt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
+            <span>
+              Signed in as <strong className="text-white">{user?.email}</strong>
+            </span>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleLeaveTeam}
+                disabled={busy}
+                className="text-xs text-gray-400 hover:text-red-400 transition-colors disabled:opacity-50"
+              >
+                Leave team
+              </button>
+              <button
+                onClick={signOut}
+                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors"
+              >
+                <LogOut size={14} /> Log Out
+              </button>
+            </div>
           </div>
         </div>
       </PageShell>

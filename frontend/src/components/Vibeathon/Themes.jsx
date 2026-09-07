@@ -153,17 +153,17 @@ const Modal = ({ isOpen, onClose, data }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 pt-12 sm:pt-16 overflow-y-auto"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-[#402327]/60 backdrop-blur-md" />
+      <div className="fixed inset-0 bg-[#402327]/85 backdrop-blur-xl z-[-1]" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[#FBF4F7] p-6 shadow-2xl shadow-[#CE4777]/30 border border-[#E38DA3]/40"
+        className="relative my-auto max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[#FBF4F7] p-6 sm:p-8 shadow-2xl shadow-[#CE4777]/40 border border-[#E38DA3]/40 z-10"
         onClick={(e) => e.stopPropagation()}
       >
         <button

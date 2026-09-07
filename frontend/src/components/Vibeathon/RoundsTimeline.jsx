@@ -156,31 +156,27 @@ const RoundItem = ({ round, index }) => {
 const RoundsTimeline = () => {
   const rounds = [
     {
-      title: "Round 1: The Vision",
-      date: "7 September",
-      description: `Submit your PPT and idea description.
-
-The submission will focus on your idea, problem statement, proposed solution, and approach.
-
-Selected teams will move forward to the Online Mentorship Round.`,
+      title: "🧠 Round 1 — THE VISION",
+      date: "Idea & Concept",
+      description: `Brainstorm the problem statement and understand the challenge.
+Develop a clear solution idea and define your vision for the application.
+Focus on creativity, problem-solving, and turning your idea into a solid concept.`,
     },
     {
-      title: "Round 2: The Proof",
-      subtitle: "Online",
-      date: "19 September",
-      description: `Shortlisted teams will receive a challenge to solve.
-
-Put your ideas, skills, and creativity to the test as you work on the challenge before the finale.`,
+      title: "💻 Round 2 — THE PROOF",
+      subtitle: "Vibecoding",
+      date: "10 Sept",
+      description: `Starting 10 September, bring your vision to life through vibecoding.
+Build your application based on the problem statement and turn your solution into a working prototype.
+Focus on execution, functionality, and how effectively you translate your idea into reality.`,
     },
     {
-      title: "Round 3: The Build",
-      subtitle: "Offline",
-      date: "To be Announced",
-      description: `The Grand Finale: To be Announced.
-
-Shortlisted teams will take on an 8-hour Vibeathon challenge.
-
-Build, experiment, and bring your ideas to life as you race against the clock.`,
+      title: "⚡ Round 3 — THE BUILD",
+      subtitle: "Offline Finale",
+      date: "TBA",
+      description: `The shortlisted teams will enter the final 8-hour offline round.
+Build, refine, and polish your solution while competing against the top teams.
+Date and venue will be announced soon — stay tuned!`,
     },
   ];
 
