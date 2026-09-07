@@ -21,6 +21,18 @@ const sections = [
         maxLength: 100,
       },
       {
+        id: "projectTheme",
+        label: "Project Theme",
+        type: "select",
+        placeholder: "Select your chosen theme",
+         options: [
+          "Web3 for Transparent and Accountable Cities",
+          "AI/ML for Context-Aware Women's Travel Recommendations",
+          "AI for Smarter Campus Information",
+        ],
+        span: "full",
+      },
+      {
         id: "problemStatement",
         label: "Problem Statement",
         type: "textarea",
@@ -74,6 +86,14 @@ const sections = [
         label: "Demo Video",
         type: "url",
         placeholder: "https://youtube.com/watch?v=...",
+        span: "half",
+        maxLength: 500,
+      },
+      {
+        id: "ppt",
+        label: "PPT",
+        type: "url",
+        placeholder: "https://drive.google.com/...",
         span: "half",
         maxLength: 500,
       },
