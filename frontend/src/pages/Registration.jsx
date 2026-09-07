@@ -630,24 +630,52 @@ const Registration = () => {
           ))}
         </div>
 
-        <div className="space-y-3">
-          {isEligible ? (
-            <motion.button
-              onClick={() => navigate("/submit")}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-auto flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold text-lg text-white bg-gradient-to-r from-[#E38DA3] to-[#CF547A] hover:from-[#F4C4C9] hover:to-[#E38DA3] shadow-lg shadow-[#CF547A]/30 transition-all duration-300"
-            >
-              Continue to Submission <ArrowRight size={18} />
-            </motion.button>
-          ) : (
-            <Link
-              to="/"
-              className="inline-flex items-center justify-center w-auto py-3 px-6 rounded-lg font-semibold text-lg border-2 border-white/10 text-gray-300 hover:border-[#E38DA3] hover:text-[#E38DA3] transition-all duration-300"
-            >
-              Back to Home
-            </Link>
-          )}
+        {/* SUBMIT BUTTON & TWIST ANNOUNCEMENT */}
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch pt-2">
+            {/* Box 1: Disabled Continue to Submission Button */}
+            <div className="flex flex-col justify-between bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm space-y-4">
+              <div className="space-y-2">
+                <span className="text-xs uppercase font-mono tracking-widest text-gray-400 font-bold block">
+                  Submission Status
+                </span>
+                <button
+                  type="button"
+                  disabled={true}
+                  className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-gray-300 bg-gray-600/60 border border-gray-500/40 cursor-not-allowed shadow-inner transition-all flex items-center justify-center gap-2 pointer-events-none"
+                >
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                  Continue to Submission (Paused)
+                </button>
+              </div>
+
+              <p className="text-center text-xs text-gray-400 font-medium">
+                ⚠️ Submissions are disabled until the twist is revealed.
+              </p>
+            </div>
+
+            {/* Box 2: Crisp Twist Announcement Box */}
+            <div className="bg-gradient-to-br from-amber-500/15 via-pink-500/10 to-purple-500/15 border border-amber-500/30 rounded-2xl p-5 text-left backdrop-blur-md shadow-xl flex flex-col justify-between space-y-3">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm tracking-wide">
+                  <span>🧠⚡</span> Big Twist Dropping Soon!
+                </div>
+                <p className="text-xs text-gray-200 leading-relaxed font-normal">
+                  A big twist is dropping in the next 1–2 days. Till then, keep brainstorming, experimenting & building!
+                </p>
+                <div className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 rounded-xl p-2.5">
+                  ⚠️ <strong>DON’T SUBMIT YET.</strong> Start submitting only after the twist is revealed.
+                </div>
+                <p className="text-[11px] text-gray-300 leading-normal">
+                  📁 <strong>For submissions:</strong> PPT + coded prototype + demo video + anything else that strengthens your idea. We'll consider everything!
+                </p>
+              </div>
+
+              <div className="text-xs font-extrabold text-pink-400 pt-2 border-t border-white/10 flex items-center justify-between">
+                <span>Think unique. Build crazy. 🔥</span>
+              </div>
+            </div>
+          </div>
 
           <div className="pt-6 mt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
             <span>
