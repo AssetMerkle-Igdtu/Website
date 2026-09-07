@@ -109,11 +109,7 @@ const FAQs = () => {
     },
     {
       question: "Can I participate individually?",
-      answer: "No, you can only participate as a team of 3-4 members.",
-    },
-    {
-      question: "What are the different tracks?",
-      answer: "There are 4 tracks: Web2, Open Innovation, AI, and Web3.",
+      answer: "No, you can only participate as a team of 2-4 members.",
     },
     {
       question: "What do I need to submit in Round 1?",
@@ -123,12 +119,11 @@ const FAQs = () => {
     {
       question: "What happens after Round 1?",
       answer:
-        "Shortlisted teams will enter the Online Mentorship Round, where they’ll present their ideas to mentors, receive feedback, and refine their concepts.",
+        "Top 20-25 teams will be selected and will be called offline to present their round 2 solution to judges.",
     },
     {
       question: "Where will the final round take place?",
-      answer:
-        "The Grand Finale will be held offline at IGDTUW. The exact venue will be announced soon.",
+      answer: "TBA",
     },
     {
       question: "Do I need to build a complete project for Round 1?",
