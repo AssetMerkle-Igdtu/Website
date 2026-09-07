@@ -162,27 +162,7 @@ const Hero = () => {
                 technology, creativity, and a community of women builders.
               </motion.p>
 
-              <motion.a
-                variants={fadeInUp}
-                href="#ps"
-                className="text-xs uppercase tracking-[0.2em] text-[#402327]/50 hover:text-[#CF547A] transition-colors mt-2 inline-flex items-center gap-2"
-                whileHover={{ x: 4 }}
-              >
-                Learn More
-                <svg
-                  className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </motion.a>
+
             </motion.div>
 
             {/* ─── RIGHT COLUMN: Registration Card ─── */}
@@ -308,10 +288,7 @@ const Hero = () => {
                     </motion.div>
                   </div>
 
-                  {/* PS */}
-                  <p className="text-[11px] font-mono tracking-[0.25em] uppercase text-black text-center pt-1">
-                    PS: To be announced
-                  </p>
+
                 </div>
               </motion.div>
             </motion.div>
