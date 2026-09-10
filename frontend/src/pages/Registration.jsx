@@ -19,6 +19,7 @@ import {
 
 import GridBackground from "../components/GridBackground";
 import MoltenMetal from "../components/MoltenMetal";
+import { supabase } from "../lib/supabaseClient";
 import { useAuth } from "../context/AuthContext";
 import {
   fetchMyProfile,
@@ -163,6 +164,7 @@ const Registration = () => {
   // team join form state
   const [joinCode, setJoinCode] = useState("");
   const [copied, setCopied] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const loadState = useCallback(async () => {
     if (!user) {
@@ -186,6 +188,16 @@ const Registration = () => {
       if (myTeam) {
         setTeam(myTeam);
         setPhase("team-view");
+        try {
+          const { data: existingSub } = await supabase
+            .from("submissions")
+            .select("id")
+            .eq("team_id", myTeam.code)
+            .maybeSingle();
+          setHasSubmitted(Boolean(existingSub));
+        } catch {
+          setHasSubmitted(false);
+        }
       } else {
         setPhase("team-choice");
       }
@@ -608,41 +620,48 @@ const Registration = () => {
           ))}
         </div>
 
-        {/* SUBMIT BUTTON & TWIST ANNOUNCEMENT */}
+        {/* SUBMIT BUTTON & ROUND 2 ANNOUNCEMENT */}
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch pt-2">
-            {/* Box 1: Disabled Continue to Submission Button */}
+            {/* Box 1: Continue to Submission Button */}
             <div className="flex flex-col justify-between bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm space-y-4">
               <div className="space-y-2">
                 <span className="text-xs uppercase font-mono tracking-widest text-gray-400 font-bold block">
                   Submission Status
                 </span>
-                <button
+                <motion.button
                   type="button"
-                  disabled={true}
-                  className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-gray-300 bg-gray-600/60 border border-gray-500/40 cursor-not-allowed shadow-inner transition-all flex items-center justify-center gap-2 pointer-events-none"
+                  onClick={() => navigate("/submit")}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-black bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 transition-all shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-                  Continue to Submission (Paused)
-                </button>
+                  <span className="text-lg">🚀</span>
+                  {hasSubmitted ? "View / Edit Submission" : "Continue to Submission"}
+                  <ArrowRight size={18} />
+                </motion.button>
               </div>
 
               <p className="text-center text-xs text-gray-400 font-medium">
-                ⚠️ Submissions are disabled until the twist is revealed.
+                {hasSubmitted
+                  ? "✓ Submission saved. You can edit it before the deadline."
+                  : !isEligible
+                  ? "Note: Minimum 2 members required for final judging."
+                  : "Deadline: 16 September, 10:00 AM"}
               </p>
             </div>
 
-            {/* Box 2: Crisp Twist Announcement Box */}
+            {/* Box 2: Round 2 Announcement Box */}
             <div className="bg-gradient-to-br from-amber-500/15 via-pink-500/10 to-purple-500/15 border border-amber-500/30 rounded-2xl p-5 text-left backdrop-blur-md shadow-xl flex flex-col justify-between space-y-3">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-amber-400 font-extrabold text-sm tracking-wide">
-                  Big Twist Dropping Soon!
+                  🔥 Round 2 Is Live!
                 </div>
                 <p className="text-xs text-gray-200 leading-relaxed font-normal">
-                  A big twist is dropping in the next 1–2 days. Till then, keep brainstorming, experimenting & building!
+                  The twist is officially here! Read the challenge carefully, build your solution, and submit your project before the deadline.
                 </p>
                 <div className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 rounded-xl p-2.5">
-                  ⚠️ <strong>DON’T SUBMIT YET.</strong> Start submitting only after the twist is revealed.
+                  ⏰ <strong>DEADLINE: 16 SEPTEMBER, 10:00 AM</strong>
                 </div>
                 <p className="text-[11px] text-gray-300 leading-normal">
                   📁 <strong>For submissions:</strong> PPT + coded prototype + demo video + anything else that strengthens your idea. We'll consider everything!

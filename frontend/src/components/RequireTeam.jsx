@@ -22,7 +22,7 @@ const RequireTeam = ({ children }) => {
     fetchMyTeam(user.id)
       .then((team) => {
         if (!mounted) return;
-        setStatus(team && team.members.length >= 2 ? "ok" : "blocked");
+        setStatus(team ? "ok" : "blocked");
       })
       .catch(() => {
         if (mounted) setStatus("blocked");
