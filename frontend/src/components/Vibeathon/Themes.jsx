@@ -89,7 +89,7 @@ const themeData = [
         tagline: "Less scrolling. Less confusion. More action.",
         winningQues: "",
       },
-      R4: {
+      R2: {
         theme: "From Noise to Clarity",
         challenge: "Fifty Messages. One Impossible Afternoon.",
         description:
