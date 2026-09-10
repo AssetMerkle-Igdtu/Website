@@ -267,11 +267,23 @@ const Submission = () => {
 
       const currentTeam = membership.teams;
 
+      const { count: memberCount } = await supabase
+        .from("team_members")
+        .select("user_id", { count: "exact", head: true })
+        .eq("team_id", currentTeam.id);
+
       setTeam({
         id: currentTeam.id,
         code: currentTeam.code,
         role: membership.role,
+        memberCount: memberCount ?? 1,
       });
+
+      if (memberCount !== null && memberCount < 2) {
+        setError(
+          "Your team currently has fewer than 2 members. At least 2 members are required to submit."
+        );
+      }
 
       // ------------------------------------------------------
       // STEP 3 — FIND EXISTING SUBMISSION
@@ -479,6 +491,13 @@ const Submission = () => {
     if (!team || !team.code) {
       setError(
         "Your team could not be determined. Please refresh the page."
+      );
+      return;
+    }
+
+    if (team?.memberCount && team.memberCount < 2) {
+      setError(
+        "Your team needs at least 2 members before you can submit a project."
       );
       return;
     }
@@ -1168,6 +1187,20 @@ const Submission = () => {
                     <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
 
                     Submissions Closed
+
+                  </button>
+
+                ) : team?.memberCount && team.memberCount < 2 ? (
+
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full py-4 px-6 rounded-xl font-bold text-base text-gray-400 bg-gray-600/60 border border-gray-500/40 cursor-not-allowed shadow-inner transition-all flex items-center justify-center gap-2"
+                  >
+
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+
+                    Need at least 2 members to submit
 
                   </button>
 

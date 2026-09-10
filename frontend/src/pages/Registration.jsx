@@ -629,25 +629,36 @@ const Registration = () => {
                 <span className="text-xs uppercase font-mono tracking-widest text-gray-400 font-bold block">
                   Submission Status
                 </span>
-                <motion.button
-                  type="button"
-                  onClick={() => navigate("/submit")}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-black bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 transition-all shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span className="text-lg">🚀</span>
-                  {hasSubmitted ? "View / Edit Submission" : "Continue to Submission"}
-                  <ArrowRight size={18} />
-                </motion.button>
+                {isEligible ? (
+                  <motion.button
+                    type="button"
+                    onClick={() => navigate("/submit")}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-black bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 transition-all shadow-lg shadow-yellow-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span className="text-lg">🚀</span>
+                    {hasSubmitted ? "View / Edit Submission" : "Continue to Submission"}
+                    <ArrowRight size={18} />
+                  </motion.button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full py-3.5 px-5 rounded-xl font-bold text-base text-gray-400 bg-gray-600/60 border border-gray-500/40 cursor-not-allowed shadow-inner transition-all flex items-center justify-center gap-2"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    Need at least 2 members to submit
+                  </button>
+                )}
               </div>
 
               <p className="text-center text-xs text-gray-400 font-medium">
                 {hasSubmitted
                   ? "✓ Submission saved. You can edit it before the deadline."
-                  : !isEligible
-                  ? "Note: Minimum 2 members required for final judging."
-                  : "Deadline: 16 September, 10:00 AM"}
+                  : isEligible
+                  ? "Deadline: 16 September, 10:00 AM"
+                  : `Waiting for teammates — share code ${team.code} to reach the minimum of 2.`}
               </p>
             </div>
 
