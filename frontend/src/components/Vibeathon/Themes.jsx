@@ -29,6 +29,16 @@ const themeData = [
         tagline: "Report it. Track it. Verify it.",
         winningQues: "",
       },
+      R2: {
+        theme: "Turn Transparency into Technology",
+        challenge: "Proof Before “Resolved”",
+        description:
+          "Build a working system where a complaint is not marked as resolved just because someone clicks a button. Citizens should be able to review the submitted evidence, identify questionable or outdated proof, flag false resolutions and reopen a complaint when the issue still exists. The goal is to make every resolution backed by believable, verifiable proof.",
+        hint:
+          "Think before-and-after proof, time, location and citizen feedback.",
+        tagline: "Don’t just mark it resolved. Prove it.",
+        winningQues: "",
+      },
     },
   },
   {
@@ -47,6 +57,16 @@ const themeData = [
           "We invite participants to rethink navigation through an AI/ML-powered system that understands changing situations—not just maps. The aim is to help women compare routes with more clarity and confidence, without promising complete safety, revealing live locations, promoting surveillance or unfairly judging an area or community.",
         hint: "Think real time, surroundings, privacy, fairness and clear choices.",
         tagline: "Not just where to go—but which journey fits the moment.",
+        winningQues: "",
+      },
+      R2: {
+        theme: "When the Signal Disappears",
+        challenge: "5% Battery. No Internet. Still Miles from Home.",
+        description:
+          "Build a low-connectivity journey mode for situations where a traveller is far from home, their internet becomes unstable and their phone battery is critically low. The system should keep the most essential guidance available while using as little battery and data as possible, including offline directions, access to important help points and a compact check-in mechanism.",
+        hint:
+          "Think offline directions, essential help points, low-power design and one compact check-in.",
+        tagline: "The signal may disappear. Support shouldn’t.",
         winningQues: "",
       },
     },
@@ -69,9 +89,25 @@ const themeData = [
         tagline: "Less scrolling. Less confusion. More action.",
         winningQues: "",
       },
+      R4: {
+        theme: "From Noise to Clarity",
+        challenge: "Fifty Messages. One Impossible Afternoon.",
+        description:
+          "Build an AI assistant that turns a chaotic stream of announcements from emails, class groups and society channels into a clear, manageable action plan. The assistant should identify important deadlines, cancelled activities, conflicting commitments, limited-seat opportunities and registered events while handling repeated or incomplete information responsibly. It should prioritize what matters most without making decisions for the student or inventing missing details.",
+        hint:
+          "Think urgency, clashes, consequences and flexibility.",
+        tagline: "Fifty messages. Five priorities. One assistant. No more ambiguities.",
+        winningQues: "",
+      },
     },
   },
 ];
+
+const getSortedRoundKeys = (rounds) =>
+  Object.keys(rounds).sort(
+    (a, b) =>
+      Number(a.replace(/\D/g, "")) - Number(b.replace(/\D/g, ""))
+  );
 
 // ─── HELPER: bold all "Live competitive twist:" occurrences ──────────────
 const formatDescription = (text) => {
@@ -83,7 +119,18 @@ const formatDescription = (text) => {
 };
 
 // ─── 3D CARD COMPONENT ──────────────────────────────────────────────────────────
-const Card = ({ icon: Icon, theme, tagline, shortDescription, onClick }) => {
+const Card = ({
+  icon: Icon,
+  theme,
+  tagline,
+  shortDescription,
+  rounds,
+  onClick,
+}) => {
+  const roundKeys = useMemo(
+    () => (rounds ? getSortedRoundKeys(rounds) : []),
+    [rounds]
+  );
   const cardRef = useRef(null);
   const [style, setStyle] = useState({});
 
@@ -135,6 +182,19 @@ const Card = ({ icon: Icon, theme, tagline, shortDescription, onClick }) => {
           {shortDescription}
         </p>
 
+        {roundKeys.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2 [transform:translateZ(18px)]">
+            {roundKeys.map((key) => (
+              <span
+                key={key}
+                className="rounded-full border border-[#CF547A]/35 bg-white/60 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#CE4777]"
+              >
+                {key}
+              </span>
+            ))}
+          </div>
+        )}
+
         <div className="mt-6 flex items-center text-xs font-semibold text-[#CE4777] transition-all duration-300 group-hover:text-[#CF547A] [transform:translateZ(20px)]">
           <span>Click to explore</span>
           <FaChevronRight className="ml-1 text-[10px] transition-transform duration-300 group-hover:translate-x-1" />
@@ -149,7 +209,7 @@ const Modal = ({ isOpen, onClose, data }) => {
   if (!isOpen || !data) return null;
 
   const { theme, tagline, icon: Icon, fullDescription, rounds } = data;
-  const roundKeys = Object.keys(rounds);
+  const roundKeys = getSortedRoundKeys(rounds);
 
   return (
     <div
@@ -163,7 +223,7 @@ const Modal = ({ isOpen, onClose, data }) => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="relative my-auto max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[#FBF4F7] p-6 sm:p-8 shadow-2xl shadow-[#CE4777]/40 border border-[#E38DA3]/40 z-10"
+        className="relative my-auto max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl bg-[#FBF4F7] p-6 sm:p-8 shadow-2xl shadow-[#CE4777]/40 border border-[#E38DA3]/40 z-10"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -195,27 +255,38 @@ const Modal = ({ isOpen, onClose, data }) => {
         </div>
 
         <div>
-          <h4 className="mb-3 flex items-center text-sm font-bold uppercase tracking-wider text-[#CE4777]">
-            <FaChevronDown className="mr-2" />
-            Round Details
+          <h4 className="mb-3 flex flex-wrap items-center gap-2 text-sm font-bold uppercase tracking-wider text-[#CE4777]">
+            <span className="flex items-center">
+              <FaChevronDown className="mr-2" />
+              Round Details
+            </span>
+            <span className="rounded-full bg-[#F3AFC0]/40 px-2.5 py-0.5 text-[10px] font-bold normal-case tracking-normal text-[#402327]">
+              {roundKeys.length} round{roundKeys.length !== 1 ? "s" : ""}
+            </span>
           </h4>
 
           {roundKeys.map((key) => {
             const round = rounds[key];
+            const roundNumber = key.replace(/\D/g, "");
             return (
               <div
                 key={key}
                 className="mb-4 rounded-2xl bg-[#F7DFD4]/70 border border-[#E38DA3]/30 p-4 last:mb-0"
               >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-bold text-[#402327]">
+                <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <div>
+                    <span className="inline-flex rounded-lg bg-gradient-to-r from-[#CF547A] to-[#CE4777] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                      Round {roundNumber}
+                    </span>
+                    {round.theme && (
+                      <p className="mt-2 text-sm font-bold text-[#402327]">
+                        {round.theme}
+                      </p>
+                    )}
+                  </div>
+                  <span className="shrink-0 text-xs font-bold uppercase tracking-wider text-[#CF547A]/80">
                     {key}
                   </span>
-                  {round.theme && (
-                    <span className="text-xs text-[#CF547A] font-bold">
-                      {round.theme}
-                    </span>
-                  )}
                 </div>
 
                 {round.challenge && (
@@ -322,7 +393,7 @@ const Themes = () => {
   );
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section id="themes" className="relative py-20 overflow-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -349,6 +420,7 @@ const Themes = () => {
               theme={item.theme}
               tagline={item.tagline}
               shortDescription={item.shortDescription}
+              rounds={item.rounds}
               onClick={() => handleCardClick(item)}
             />
           ))}
