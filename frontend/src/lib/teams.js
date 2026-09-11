@@ -485,11 +485,28 @@ export async function fetchMyTeam(userId) {
 // ============================================================
 
 export async function fetchRegistrationCount() {
-  const { data, error } = await supabase.rpc("get_registration_count");
+  // 1. Try to fetch total count of all records in 'profiles' table (including users who completed auth but haven't filled full details)
+  try {
+    const { count, error } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true });
 
-  if (error) {
-    throw error;
+    if (!error && count !== null && count !== undefined) {
+      return count;
+    }
+  } catch (err) {
+    console.warn("Error fetching profiles count directly:", err);
   }
 
-  return Number(data) || 0;
+  // 2. Fallback to RPC function if direct table query returns error or null
+  try {
+    const { data, error: rpcError } = await supabase.rpc("get_registration_count");
+    if (!rpcError && data !== null && data !== undefined) {
+      return Number(data) || 0;
+    }
+  } catch (err) {
+    console.warn("Error fetching RPC registration count:", err);
+  }
+
+  return 0;
 }
