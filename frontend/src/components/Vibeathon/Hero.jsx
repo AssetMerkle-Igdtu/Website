@@ -54,6 +54,10 @@ const Hero = () => {
     };
 
     getRegistrationCount();
+    // Auto-refresh the count live every 30 seconds
+    const interval = setInterval(getRegistrationCount, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const staggerChildren = {
