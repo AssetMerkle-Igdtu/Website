@@ -485,27 +485,49 @@ export async function fetchMyTeam(userId) {
 // ============================================================
 
 export async function fetchRegistrationCount() {
-  // 1. Try to fetch total count of all records in 'profiles' table (including users who completed auth but haven't filled full details)
+  // 1. Try RPC functions first (SECURITY DEFINER RPCs bypass RLS for anonymous website visitors)
+  const rpcNames = [
+    "get_registration_count",
+    "get_total_registrations",
+    "get_profiles_count",
+    "get_user_count",
+  ];
+
+  for (const rpcName of rpcNames) {
+    try {
+      const { data, error } = await supabase.rpc(rpcName);
+      if (!error && data !== null && data !== undefined) {
+        const num = Number(data);
+        if (!isNaN(num) && num > 0) {
+          return num;
+        }
+      }
+    } catch {
+      // Continue to next RPC candidate
+    }
+  }
+
+  // 2. Direct query on 'profiles' table (only used if count > 0, as RLS returns 0 for anon users)
   try {
     const { count, error } = await supabase
       .from("profiles")
       .select("id", { count: "exact", head: true });
 
-    if (!error && count !== null && count !== undefined) {
+    if (!error && typeof count === "number" && count > 0) {
       return count;
     }
   } catch (err) {
     console.warn("Error fetching profiles count directly:", err);
   }
 
-  // 2. Fallback to RPC function if direct table query returns error or null
+  // 3. Fallback to get_registration_count RPC output even if 0
   try {
-    const { data, error: rpcError } = await supabase.rpc("get_registration_count");
-    if (!rpcError && data !== null && data !== undefined) {
+    const { data, error } = await supabase.rpc("get_registration_count");
+    if (!error && data !== null && data !== undefined) {
       return Number(data) || 0;
     }
   } catch (err) {
-    console.warn("Error fetching RPC registration count:", err);
+    console.warn("Error fetching fallback RPC registration count:", err);
   }
 
   return 0;
