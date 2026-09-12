@@ -75,7 +75,7 @@ const sections = [
       },
       {
         id: "liveDemoLink",
-        label: "Live Demo",
+        label: "Prototype Link",
         type: "url",
         placeholder: "https://your-demo.vercel.app",
         span: "half",
