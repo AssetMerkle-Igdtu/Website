@@ -75,7 +75,7 @@ const sections = [
       },
       {
         id: "liveDemoLink",
-        label: "Prototype Link",
+        label: "Deployed Website Link",
         type: "url",
         placeholder: "https://your-demo.vercel.app",
         span: "half",
@@ -367,7 +367,7 @@ const Submission = () => {
 
       setError(
         err?.message ||
-          "Unable to load your submission. Please refresh and try again."
+        "Unable to load your submission. Please refresh and try again."
       );
     } finally {
       setLoading(false);
@@ -655,7 +655,7 @@ const Submission = () => {
       } else {
         setError(
           err?.message ||
-            "Something went wrong while saving your submission. Please try again."
+          "Something went wrong while saving your submission. Please try again."
         );
       }
     } finally {
