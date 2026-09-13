@@ -68,10 +68,12 @@ const sections = [
       {
         id: "figmaLink",
         label: "Figma",
-        type: "url",
-        placeholder: "https://figma.com/...",
+        type: "text",
+        placeholder: "https://figma.com/... (or type 'nil')",
         span: "half",
         maxLength: 500,
+        optional: true,
+        hint: "Optional",
       },
       {
         id: "liveDemoLink",
@@ -415,7 +417,12 @@ const Submission = () => {
   // ==========================================================
 
   const validateForm = () => {
-    const emptyField = allFields.find(
+    // Only fields that are NOT marked optional are required.
+    const requiredFields = allFields.filter(
+      (field) => !field.optional
+    );
+
+    const emptyField = requiredFields.find(
       (field) =>
         !formData[field.id].trim()
     );
@@ -429,11 +436,9 @@ const Submission = () => {
     );
 
     for (const field of urlFields) {
-      if (
-        !isValidUrl(
-          formData[field.id].trim()
-        )
-      ) {
+      const value = formData[field.id].trim();
+
+      if (!isValidUrl(value)) {
         return `Please enter a valid ${field.label}.`;
       }
     }
@@ -819,9 +824,14 @@ const Submission = () => {
 
           <span className="text-sm font-medium text-gray-300">
             {field.label}
+            {field.optional && (
+              <span className="text-gray-500 font-normal">
+                {" "}(optional)
+              </span>
+            )}
           </span>
 
-          {field.hint && (
+          {field.hint && !field.optional && (
             <span className="text-xs text-gray-500">
               {field.hint}
             </span>
