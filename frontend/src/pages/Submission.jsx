@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 // ============================================================
 // FIELD DEFINITIONS
@@ -86,10 +86,12 @@ const sections = [
       {
         id: "demoVideoLink",
         label: "Demo Video",
-        type: "url",
-        placeholder: "https://youtube.com/watch?v=...",
+        type: "text",
+        placeholder: "https://youtube.com/watch?v=... (or type 'nil')",
         span: "half",
         maxLength: 500,
+        optional: true,
+        hint: "Optional",
       },
       {
         id: "pptLink",
