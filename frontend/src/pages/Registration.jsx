@@ -657,7 +657,7 @@ const Registration = () => {
                 {hasSubmitted
                   ? "✓ Submission saved. You can edit it before the deadline."
                   : isEligible
-                  ? "Deadline: 16 September, 10:00 AM"
+                  ? "Deadline: 16 September, 11:30 AM"
                   : `Waiting for teammates — share code ${team.code} to reach the minimum of 2.`}
               </p>
             </div>
@@ -672,7 +672,7 @@ const Registration = () => {
                   The twist is officially here! Read the challenge carefully, build your solution, and submit your project before the deadline.
                 </p>
                 <div className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 rounded-xl p-2.5">
-                  ⏰ <strong>DEADLINE: 16 SEPTEMBER, 10:00 AM</strong>
+                  ⏰ <strong>DEADLINE: 16 SEPTEMBER, 11:30 AM</strong>
                 </div>
                 <p className="text-[11px] text-gray-300 leading-normal">
                   📁 <strong>For submissions:</strong> PPT + coded prototype + demo video + anything else that strengthens your idea. We'll consider everything!

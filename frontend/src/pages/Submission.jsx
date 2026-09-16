@@ -129,7 +129,7 @@ const EMPTY_FORM = {
 // ============================================================
 
 const SUBMISSION_DEADLINE = new Date(
-  "2026-09-16T10:00:00+05:30"
+  "2026-09-16T11:30:00+05:30"
 );
 
 // ============================================================
@@ -1262,7 +1262,7 @@ const Submission = () => {
 
                 {submissionClosed
                   ? "The submission window has ended."
-                  : "Deadline: 16 September, 10:00 AM"}
+                  : "Deadline: 16 September, 11:30 AM"}
 
               </p>
 
@@ -1289,7 +1289,7 @@ const Submission = () => {
                 <div className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 rounded-xl p-2.5">
                   ⏰{" "}
                   <strong>
-                    DEADLINE: 16 SEPTEMBER, 10:00 AM
+                    DEADLINE: 16 SEPTEMBER, 11:30 AM
                   </strong>
                 </div>
 
