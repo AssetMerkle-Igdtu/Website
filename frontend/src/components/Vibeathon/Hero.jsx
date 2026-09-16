@@ -13,9 +13,9 @@ const Hero = () => {
   const [registrationCount, setRegistrationCount] = useState(0);
 
   useEffect(() => {
-    const registrationDeadline = new Date(
-      "2026-09-16T11:30:00+05:30"
-    ).getTime();
+  const registrationDeadline = new Date(
+    "2026-09-16T12:00:00+05:30"
+  ).getTime();
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
